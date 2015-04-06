@@ -1842,9 +1842,7 @@ public class BigInteger
             // is NOT prime is a^(p-1) mod p != 1
 
             if (resultLen > 1 || (resultLen == 1 && expResult.data[0] != 1))
-            {
                 return false;
-            }
         }
 
         return true;
@@ -2247,17 +2245,13 @@ public class BigInteger
 
             BigInteger resultNum = thisVal % divisor;
             if (resultNum.IntValue() == 0)
-            {
                 return false;
-            }
         }
 
         if (thisVal.RabinMillerTest(confidence))
             return true;
         else
-        {
             return false;
-        }
     }
 
 
@@ -2314,9 +2308,7 @@ public class BigInteger
 
             BigInteger resultNum = thisVal % divisor;
             if (resultNum.IntValue() == 0)
-            {
                 return false;
-            }
         }
 
         // Perform BASE 2 Rabin-Miller Test
