@@ -3,7 +3,7 @@ Continuation of work on the BigInteger implementation for C# initially created b
 
 Pull requests are welcome and appreciated.
 
-# TODO
+## TODO
 * Fix known bugs
 * Add testing suite
 * Create a NuGet package
