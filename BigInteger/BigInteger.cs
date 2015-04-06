@@ -860,7 +860,7 @@ public class BigInteger
                 ulong val = ((ulong)buffer[i]) >> shiftAmount;
                 val |= carry;
 
-                carry = ((ulong)buffer[i]) << invShift;
+                carry = (((ulong)buffer[i]) << invShift) & 0xFFFFFFFF;
                 buffer[i] = (uint)(val);
             }
 

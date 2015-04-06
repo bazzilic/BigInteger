@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62060865-0ACF-49BA-94CA-10C15A52B564}</ProjectGuid>
+    <ProjectGuid>{8CF3391E-57AF-4C89-9496-C9D071E98AF4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BigInteger</RootNamespace>
