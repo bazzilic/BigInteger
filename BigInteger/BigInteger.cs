@@ -2665,14 +2665,25 @@ public class BigInteger
                 int pos = 0;
                 uint tempVal, val = data[dataLength - 1];
 
-                if((tempVal = (val >> 24 & 0xFF)) != 0)
-                        result[pos++] = (byte)tempVal;
-                if((tempVal = (val >> 16 & 0xFF)) != 0)
-                        result[pos++] = (byte)tempVal;
-                if((tempVal = (val >> 8 & 0xFF)) != 0)
-                        result[pos++] = (byte)tempVal;
-                if((tempVal = (val & 0xFF)) != 0)
-                        result[pos++] = (byte)tempVal;
+
+                if ((tempVal = (val >> 24 & 0xFF)) != 0)
+                    result[pos++] = (byte)tempVal;
+
+                if ((tempVal = (val >> 16 & 0xFF)) != 0)
+                    result[pos++] = (byte)tempVal;
+                else if (pos > 0)
+                        pos++;
+
+                if ((tempVal = (val >> 8 & 0xFF)) != 0)
+                    result[pos++] = (byte)tempVal;
+                else if (pos > 0)
+                        pos++;
+
+                if ((tempVal = (val & 0xFF)) != 0)
+                    result[pos++] = (byte)tempVal;
+                else if (pos > 0)
+                        pos++;
+
 
                 for(int i = dataLength - 2; i >= 0; i--, pos += 4)
                 {
