@@ -372,8 +372,8 @@ public class BigInteger
 
         for (int i = inData.Length - 1, j = 0; i >= 3; i -= 4, j++)
         {
-            data[j] = (uint)((inData[i - 3] << 24) + (inData[i - 2] << 16) +
-                             (inData[i - 1] << 8) + inData[i]);
+            data[j] = ((uint)(inData[i - 3]) << 24) + ((uint)(inData[i - 2]) << 16) +
+                      ((uint)(inData[i - 1] << 8))  + ((uint)(inData[i]));
         }
 
         if (leftOver == 1)
