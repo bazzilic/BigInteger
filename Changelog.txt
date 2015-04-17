@@ -1,0 +1,30 @@
+April 6, 2015 (Version 1.04)
+ - Fixed some well known bugs
+ - Created a NuGet package (available at https://www.nuget.org/packages/BigInteger/)
+
+September 23, 2002 (Version 1.03)
+ - Fixed operator- to give correct data length.
+ - Added Lucas sequence generation.
+ - Added Strong Lucas Primality test.
+ - Added integer square root method.
+ - Added setBit/unsetBit methods.
+ - New isProbablePrime() method which do not require the
+   confident parameter.
+
+August 29, 2002 (Version 1.02)
+ - Fixed bug in the exponentiation of negative numbers.
+ - Faster modular exponentiation using Barrett reduction.
+ - Added getBytes() method.
+ - Fixed bug in ToHexString method.
+ - Added overloading of ^ operator.
+ - Faster computation of Jacobi symbol.
+
+August 19, 2002 (Version 1.01)
+ - Big integer is stored and manipulated as unsigned integers (4 bytes) instead of
+   individual bytes this gives significant performance improvement.
+ - Updated Fermat's Little Theorem test to use a^(p-1) mod p = 1
+ - Added isProbablePrime method.
+ - Updated documentation.
+
+August 9, 2002 (Version 1.0)
+ - Initial Release.
