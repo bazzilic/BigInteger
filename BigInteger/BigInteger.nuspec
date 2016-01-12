@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <description>$description$</description>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/bazzilic/BigInteger</projectUrl>
+    <licenseUrl>https://github.com/bazzilic/BigInteger/blob/master/README.md</licenseUrl>
+    <tags>Big Integer BigInteger</tags>
+  </metadata>
+</package>
