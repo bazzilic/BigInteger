@@ -395,6 +395,8 @@ namespace BigIntegerTests
             b = new BigInteger("1239846123879561238975328976356178347616234781692361897356917865802346578234675432312123467989790", 10);
             a++;
             Assert.AreEqual(a, b);
+
+            // TODO Test negative really big integers
         }
 
         [TestMethod]
@@ -447,6 +449,8 @@ namespace BigIntegerTests
             b = new BigInteger("1239846123879561238975328976356178347616234781692361897356917865802346578234675432312123467989788", 10);
             a--;
             Assert.AreEqual(a, b);
+
+            // TODO Test negative really big integers
         }
 
         [TestMethod]
@@ -558,7 +562,9 @@ namespace BigIntegerTests
             b = new BigInteger("1566418015110056215187231389616519534577516579792275171111641261221051312281313815513819230315922221620199110721958389124169108971797193714911636204254753718521720234123778235733313467254631402533915314654249108131105183249173121122367515221314612118015725347", 10);
 
             Assert.IsFalse(a == b);
-            Assert.IsFalse(b == a); ;
+            Assert.IsFalse(b == a);
+
+            // TODO Test negative really big integers
         }
 
         [TestMethod]
@@ -636,6 +642,8 @@ namespace BigIntegerTests
 
             Assert.IsTrue(a != b);
             Assert.IsTrue(b != a);
+
+            // TODO Test negative really big integers
         }
 
         [TestMethod]
