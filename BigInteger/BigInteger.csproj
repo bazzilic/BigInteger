@@ -30,7 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release and Deploy|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Deploy|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -50,7 +50,7 @@
        Other similar extension points exist, see Microsoft.Common.targets.-->
   <!--Target Name="BeforeBuild">
   </Target-->
-  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release and Deploy'">
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Deploy'">
     <Exec Command="powershell -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\..\.deploy\deployLocalNuGet.ps1&quot;">
     </Exec>
   </Target>

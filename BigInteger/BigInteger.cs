@@ -4,7 +4,6 @@ public class BigInteger
 {
     // maximum length of the BigInteger in uint (4 bytes)
     // change this to suit the required level of precision.
-
     private const int maxLength = 70;
 
     // primes smaller than 2000 to test the generated prime number
@@ -210,7 +209,7 @@ public class BigInteger
     // sign to be specified.
     //
     //***********************************************************************
-    public BigInteger(byte[] inData)
+    /*public BigInteger(byte[] inData)
     {
         dataLength = inData.Length >> 2;
 
@@ -240,22 +239,24 @@ public class BigInteger
 
         while (dataLength > 1 && data[dataLength - 1] == 0)
             dataLength--;
-    }
+    }*/
 
 
     //***********************************************************************
     // Constructor (Default value provided by an array of bytes of the
     // specified length.)
     //***********************************************************************
-    public BigInteger(byte[] inData, int inLen)
+    public BigInteger(System.Collections.Generic.IList<byte> inData, int length = -1, int offset = 0)
     {
+        var inLen = length == -1 ? inData.Count - offset : length;
+
         dataLength = inLen >> 2;
 
         int leftOver = inLen & 0x3;
         if (leftOver != 0)         // length not multiples of 4
             dataLength++;
 
-        if (dataLength > maxLength || inLen > inData.Length)
+        if (dataLength > maxLength || inLen > inData.Count - offset)
             throw (new ArithmeticException("Byte overflow in constructor."));
 
 
@@ -263,16 +264,16 @@ public class BigInteger
 
         for (int i = inLen - 1, j = 0; i >= 3; i -= 4, j++)
         {
-            data[j] = (uint)((inData[i - 3] << 24) + (inData[i - 2] << 16) +
-                             (inData[i - 1] << 8) + inData[i]);
+            data[j] = (uint)((inData[offset + i - 3] << 24) + (inData[offset + i - 2] << 16) +
+                             (inData[offset + i - 1] << 8)  +  inData[offset + i]);
         }
 
         if (leftOver == 1)
-            data[dataLength - 1] = (uint)inData[0];
+            data[dataLength - 1] = (uint)inData[offset + 0];
         else if (leftOver == 2)
-            data[dataLength - 1] = (uint)((inData[0] << 8) + inData[1]);
+            data[dataLength - 1] = (uint)((inData[offset + 0] << 8) + inData[offset + 1]);
         else if (leftOver == 3)
-            data[dataLength - 1] = (uint)((inData[0] << 16) + (inData[1] << 8) + inData[2]);
+            data[dataLength - 1] = (uint)((inData[offset + 0] << 16) + (inData[offset + 1] << 8) + inData[offset + 2]);
 
 
         if (dataLength == 0)
@@ -1557,7 +1558,7 @@ public class BigInteger
     //***********************************************************************
     // Returns the position of the most significant bit in the BigInteger.
     //
-    // Eg.  The result is 0, if the value of BigInteger is 0...0000 0000
+    // Eg.  The result is 1, if the value of BigInteger is 0...0000 0000
     //      The result is 1, if the value of BigInteger is 0...0000 0001
     //      The result is 2, if the value of BigInteger is 0...0000 0010
     //      The result is 2, if the value of BigInteger is 0...0000 0011
@@ -1579,7 +1580,7 @@ public class BigInteger
         }
         bits += ((dataLength - 1) << 5);
 
-        return bits;
+        return bits == 0 ? 1 : bits;
     }
 
 

@@ -1,6 +1,9 @@
-﻿Invoke-Expression "& `"$($PSScriptRoot)\nuget.exe`" pack `"..\BigInteger\BigInteger.csproj`" -Prop Configuration=Release"
+﻿$absPath = $PSScriptRoot
+$slnAbsPath = Split-Path -parent $absPath
+$deployAbsPath = "$(Split-Path -parent $slnAbsPath)\.NuGetFeed"
 
-Invoke-Expression "& `"$($PSScriptRoot)\nuget.exe`" add `"$(Get-ChildItem *.nupkg | Select-Object -First 1)`" -Source `"..\..\.NuGetFeed`""
+& "nuget" @("pack", "$slnAbsPath\BigInteger\BigInteger.csproj", "-Properties", "Configuration=Release")
+& "nuget" @("add", "$(Get-ChildItem *.nupkg | Select-Object -First 1)", "-Source", "$deployAbsPath")
 
 Get-ChildItem *.nupkg | ForEach-Object {
 	Remove-Item $_ -Force
