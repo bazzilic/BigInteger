@@ -1,5 +1,13 @@
-April 6, 2015 (Version 1.04)
- - Fixed some well known bugs
+July 4th, 2016 (Version 1.0.6)
+ - Added many tests, but coverage is still far from 100%
+ - Automated creation of a NuGet package under 'Deploy' build configuration
+ - Constructors ctor(byte[] data) and ctor(byte[] data, int length) were
+   merged into one ctor(IList<byte> data, int length, int offset)
+ - Fixed a bug in bitCount() where it return '0' for BigInteger(0),
+   now returns '1'
+
+April 6, 2015 (Version 1.0.4)
+ - Fixed some well-known bugs
  - Created a NuGet package (available at https://www.nuget.org/packages/BigInteger/)
 
 September 23, 2002 (Version 1.03)

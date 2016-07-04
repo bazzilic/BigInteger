@@ -1,14 +1,16 @@
 BigInteger class for C#
 =======================
-Continuation of work on the BigInteger implementation for C# initially created by Chew Keong TAN. Current version is 1.0.4.
+Continuation of work on the BigInteger implementation for C# initially created by Chew Keong TAN. Current version is 1.0.6.
 
-Pull requests are welcome and appreciated.
+Pull requests are welcome and appreciated. **Use with caution**.
 
 Original description of the class is located here: http://www.codeproject.com/Articles/2728/C-BigInteger-Class
 
 NuGet package for the library is located here: https://www.nuget.org/packages/BigInteger/
 
 You can install the package using Package Manager Console by executing `Install-Package BigInteger`.
+
+Refer to [Changelog.txt](https://raw.githubusercontent.com/bazzilic/BigInteger/master/Changelog.txt) for the changes to the current version.
 
 TODO
 ----
