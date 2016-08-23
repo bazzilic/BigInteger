@@ -5,6 +5,8 @@ public class BigInteger
     // maximum length of the BigInteger in uint (4 bytes)
     // change this to suit the required level of precision.
     private const int maxLength = 70;
+    private const int MAX_LENGTH = 70;
+    private const UInt32 ALL_ONES = 0xFFFFFFFF, ONE_ALL_ZEROS = 0x80000000;
 
     // primes smaller than 2000 to test the generated prime number
     public static readonly int[] primesBelow2000 = {
@@ -26,18 +28,14 @@ public class BigInteger
         1993, 1997, 1999 };
 
 
-    private uint[] data = null;            // stores bytes from the Big Integer
-    public int dataLength;                 // number of actual chars used
-
+    private uint[] data = new uint[MAX_LENGTH];             // stores bytes from the Big Integer
+    public int dataLength { get; set; }                 // number of actual chars used
+    // public int dataLength { get; set; } = 1; // C# 6.0
 
     //***********************************************************************
     // Constructor (Default value for BigInteger is 0
     //***********************************************************************
-    public BigInteger()
-    {
-        data = new uint[maxLength];
-        dataLength = 1;
-    }
+    public BigInteger() : this(0) { }
 
 
     //***********************************************************************
@@ -45,58 +43,34 @@ public class BigInteger
     //***********************************************************************
     public BigInteger(long value)
     {
-        data = new uint[maxLength];
-        long tempVal = value;
+        // Can remove this line if using C# 6.0
+        // Just uncomment the initialized property
+        this.dataLength = 1;
+
+        if (value == 0) return;
+
+        bool isPositive = value >= 0;
 
         // copy bytes from long to BigInteger without any assumption of
         // the length of the long datatype
-        dataLength = 0;
-        while (value != 0 && dataLength < maxLength)
+        for (this.dataLength = 0; this.dataLength < MAX_LENGTH && value != 0; this.dataLength++)
         {
-            data[dataLength] = (uint)(value & 0xFFFFFFFF);
+            data[this.dataLength] = (uint)(value & ALL_ONES);
             value >>= 32;
-            dataLength++;
         }
 
-        if (tempVal > 0)         // overflow check for +ve value
-        {
-            if (value != 0 || (data[maxLength - 1] & 0x80000000) != 0)
-                throw (new ArithmeticException("Positive overflow in constructor."));
-        }
-        else if (tempVal < 0)    // underflow check for -ve value
-        {
-            if (value != -1 || (data[dataLength - 1] & 0x80000000) == 0)
-                throw (new ArithmeticException("Negative underflow in constructor."));
-        }
+        if (isPositive && (value != 0 || (data[MAX_LENGTH - 1] & ONE_ALL_ZEROS) != 0))         // overflow check for +ve value
+            throw (new ArithmeticException("Positive overflow in constructor."));
+        else if (!isPositive && (value != -1 || (data[this.dataLength - 1] & ONE_ALL_ZEROS) == 0))    // underflow check for -ve value
+            throw (new ArithmeticException("Negative underflow in constructor."));
 
-        if (dataLength == 0)
-            dataLength = 1;
     }
 
 
     //***********************************************************************
     // Constructor (Default value provided by ulong)
     //***********************************************************************
-    public BigInteger(ulong value)
-    {
-        data = new uint[maxLength];
-
-        // copy bytes from ulong to BigInteger without any assumption of
-        // the length of the ulong datatype
-        dataLength = 0;
-        while (value != 0 && dataLength < maxLength)
-        {
-            data[dataLength] = (uint)(value & 0xFFFFFFFF);
-            value >>= 32;
-            dataLength++;
-        }
-
-        if (value != 0 || (data[maxLength - 1] & 0x80000000) != 0)
-            throw (new ArithmeticException("Positive overflow in constructor."));
-
-        if (dataLength == 0)
-            dataLength = 1;
-    }
+    public BigInteger(ulong value) : this((long)value) { }
 
 
 
@@ -105,12 +79,9 @@ public class BigInteger
     //***********************************************************************
     public BigInteger(BigInteger bi)
     {
-        data = new uint[maxLength];
-
-        dataLength = bi.dataLength;
-
-        for (int i = 0; i < dataLength; i++)
-            data[i] = bi.data[i];
+        this.dataLength = bi.dataLength;
+        for (int i = 0; i < this.dataLength; i++)
+            this.data[i] = bi.data[i];
     }
 
 
@@ -265,7 +236,7 @@ public class BigInteger
         for (int i = inLen - 1, j = 0; i >= 3; i -= 4, j++)
         {
             data[j] = (uint)((inData[offset + i - 3] << 24) + (inData[offset + i - 2] << 16) +
-                             (inData[offset + i - 1] << 8)  +  inData[offset + i]);
+                             (inData[offset + i - 1] << 8) + inData[offset + i]);
         }
 
         if (leftOver == 1)
@@ -622,7 +593,7 @@ public class BigInteger
         while (bufLen > 1 && buffer[bufLen - 1] == 0)
             bufLen--;
 
-        for (int count = shiftVal; count > 0; )
+        for (int count = shiftVal; count > 0;)
         {
             if (count < shiftAmount)
                 shiftAmount = count;
@@ -690,7 +661,7 @@ public class BigInteger
         while (bufLen > 1 && buffer[bufLen - 1] == 0)
             bufLen--;
 
-        for (int count = shiftVal; count > 0; )
+        for (int count = shiftVal; count > 0;)
         {
             if (count < shiftAmount)
             {
@@ -828,7 +799,7 @@ public class BigInteger
         if ((bi1.data[pos] & 0x80000000) != 0 && (bi2.data[pos] & 0x80000000) == 0)
             return false;
 
-            // bi1 is positive, bi2 is negative
+        // bi1 is positive, bi2 is negative
         else if ((bi1.data[pos] & 0x80000000) == 0 && (bi2.data[pos] & 0x80000000) != 0)
             return true;
 
@@ -854,7 +825,7 @@ public class BigInteger
         if ((bi1.data[pos] & 0x80000000) != 0 && (bi2.data[pos] & 0x80000000) == 0)
             return true;
 
-            // bi1 is positive, bi2 is negative
+        // bi1 is positive, bi2 is negative
         else if ((bi1.data[pos] & 0x80000000) == 0 && (bi2.data[pos] & 0x80000000) != 0)
             return false;
 
