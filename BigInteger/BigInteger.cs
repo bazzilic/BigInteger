@@ -2387,17 +2387,14 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Generates a positive BigInteger that is probably prime.
-    //***********************************************************************
+    
     /// <summary>
     /// Generates a positive BigInteger that is probably prime
     /// </summary>
-    /// <param name="bits"></param>
-    /// <param name="confidence"></param>
-    /// <param name="rand"></param>
-    /// <returns></returns>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <param name="rand">Random object</param>
+    /// <returns>A probably prime number</returns>
     public static BigInteger genPseudoPrime(int bits, int confidence, Random rand)
     {
         BigInteger result = new BigInteger();
