@@ -37,7 +37,6 @@ public class BigInteger
         1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 1931, 1933, 1949, 1951, 1973, 1979, 1987,
         1993, 1997, 1999 };
 
-
     private uint[] data = null;            // stores bytes from the Big Integer
     public int dataLength;                 // number of actual chars used
 
@@ -110,6 +109,7 @@ public class BigInteger
         if (dataLength == 0)
             dataLength = 1;
     }
+
 
     /// <summary>
     /// Constructor (Default value provided by BigInteger)
@@ -284,6 +284,7 @@ public class BigInteger
         while (dataLength > 1 && data[dataLength - 1] == 0)
             dataLength--;
     }
+
     
     /// <summary>
     ///  Constructor (Default value provided by an array of unsigned integers)
@@ -305,6 +306,7 @@ public class BigInteger
             dataLength--;
     }
 
+
     /// <summary>
     /// Cast a type long value to type BigInteger value
     /// </summary>
@@ -313,6 +315,7 @@ public class BigInteger
     {
         return (new BigInteger(value));
     }
+
 
     /// <summary>
     /// Cast a type ulong value to type BigInteger value
@@ -323,6 +326,7 @@ public class BigInteger
         return (new BigInteger(value));
     }
 
+
     /// <summary>
     /// Cast a type int value to type BigInteger value
     /// </summary>
@@ -332,6 +336,7 @@ public class BigInteger
         return (new BigInteger((long)value));
     }
 
+
     /// <summary>
     /// Cast a type uint value to type BigInteger value
     /// </summary>
@@ -340,6 +345,7 @@ public class BigInteger
     {
         return (new BigInteger((ulong)value));
     }
+
 
     /// <summary>
     /// Overloading of addition operator, support addition of BigInteger type
@@ -381,6 +387,7 @@ public class BigInteger
 
         return result;
     }
+
 
     /// <summary>
     /// Overloading of the unary ++ operator, support BigInteger to be incremented by 1
@@ -426,6 +433,7 @@ public class BigInteger
         }
         return result;
     }
+
 
     /// <summary>
     /// Overloading of subtraction operator, support subtraction of BigInteger type
@@ -476,6 +484,7 @@ public class BigInteger
 
         return result;
     }
+
 
     /// <summary>
     /// Overloading of the unary -- operator, support BigInteger to be decremented by 1
@@ -622,10 +631,8 @@ public class BigInteger
     }
 
 
-
-
     /// <summary>
-    /// Overloading of the unary &lt&lt operator, support BigInteger to have left-shifted
+    /// Overloading of the unary &lt;&lt; operator, support BigInteger to have left-shifted
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <param name="shiftVal">Left shift by shiftVal bit</param>
@@ -637,7 +644,6 @@ public class BigInteger
 
         return result;
     }
-
 
     // least significant bits at lower part of buffer
     private static int shiftLeft(uint[] buffer, int shiftVal)
@@ -675,10 +681,10 @@ public class BigInteger
         }
         return bufLen;
     }
-    
+
 
     /// <summary>
-    /// Overloading of the unary &gt&gt operator, support BigInteger to have right-shifted
+    /// Overloading of the unary &gt;&gt; operator, support BigInteger to have right-shifted
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <param name="shiftVal">Right shift by shiftVal bit</param>
@@ -745,6 +751,7 @@ public class BigInteger
 
         return bufLen;
     }
+
     
     /// <summary>
     /// Overloading of the NOT operator (1's complement), support complementing of BigInteger type bit by bit
@@ -810,6 +817,7 @@ public class BigInteger
             result.dataLength--;
         return result;
     }
+
     
     /// <summary>
     /// Overloading of equality operator, allow comparing 2 BigInteger type with == operator
@@ -822,6 +830,7 @@ public class BigInteger
         return bi1.Equals(bi2);
     }
 
+
     /// <summary>
     /// Overloading of not equal operator, allow comparing 2 BigInteger type with != operator
     /// </summary>
@@ -832,6 +841,7 @@ public class BigInteger
     {
         return !(bi1.Equals(bi2));
     }
+
 
     /// <summary>
     /// Overriding of Equals method, allow comparing BigInteger with an arbitary object
@@ -861,7 +871,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &gt operator
+    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &gt; operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -891,8 +901,9 @@ public class BigInteger
         return false;
     }
 
+
     /// <summary>
-    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &lt operator
+    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &lt; operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -922,8 +933,9 @@ public class BigInteger
         return false;
     }
 
+
     /// <summary>
-    /// Overloading of greater than or equal to operator, allow comparing 2 BigInteger type with &gt= operator
+    /// Overloading of greater than or equal to operator, allow comparing 2 BigInteger type with &gt;= operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -933,8 +945,9 @@ public class BigInteger
         return (bi1 == bi2 || bi1 > bi2);
     }
 
+
     /// <summary>
-    /// Overloading of less than or equal to operator, allow comparing 2 BigInteger type with &lt= operator
+    /// Overloading of less than or equal to operator, allow comparing 2 BigInteger type with &lt;= operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -1107,7 +1120,6 @@ public class BigInteger
             outRemainder.dataLength--;
     }
 
-
    
     /// <summary>
     /// Overloading of division operator, support division of 2 BigInteger type
@@ -1196,13 +1208,12 @@ public class BigInteger
     }
 
 
-
     /// <summary>
     /// Overloading of bitwise AND operator, support bitwise and operation on BigInteger type
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
-    /// <returns>BigInteger result after performing & operation</returns>
+    /// <returns>BigInteger result after performing &amp; operation</returns>
     public static BigInteger operator &(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1278,7 +1289,6 @@ public class BigInteger
     }
 
 
-
     /// <summary>
     /// Compare this and a BigInteger and find the maximum one
     /// </summary>
@@ -1319,6 +1329,7 @@ public class BigInteger
         else
             return (new BigInteger(this));
     }
+
 
     /// <summary>
     /// Returns a string representing the BigInteger in base 10
@@ -1384,7 +1395,6 @@ public class BigInteger
     }
 
 
-
     /// <summary>
     /// Returns a hex string showing the contains of the BigInteger
     /// </summary>
@@ -1404,7 +1414,6 @@ public class BigInteger
 
         return result;
     }
-
 
 
     /// <summary>
@@ -1478,13 +1487,11 @@ public class BigInteger
     }
 
 
-
-
     /// <summary>
     /// Fast calculation of modular reduction using Barrett's reduction
     /// </summary>
     /// <remarks>
-    /// Requires x &lt b^(2k), where b is the base.  In this case, base is 2^32 (uint).
+    /// Requires x &lt; b^(2k), where b is the base.  In this case, base is 2^32 (uint).
     ///
     /// Reference [4]
     /// </remarks>
@@ -1570,6 +1577,7 @@ public class BigInteger
         return r1;
     }
 
+
     /// <summary>
     /// Returns gcd(this, bi)
     /// </summary>
@@ -1642,6 +1650,7 @@ public class BigInteger
             dataLength = 1;
     }
 
+
     /// <summary>
     /// Returns the position of the most significant bit in the BigInteger
     /// </summary>
@@ -1677,7 +1686,7 @@ public class BigInteger
     /// Probabilistic prime test based on Fermat's little theorem
     /// </summary>
     /// <remarks>
-    /// for any a &lt p (p does not divide a) if
+    /// for any a &lt; p (p does not divide a) if
     ///      a^(p-1) mod p != 1 then p is not prime.
     ///
     /// Otherwise, p is probably prime (pseudoprime to the chosen base).
@@ -1752,16 +1761,15 @@ public class BigInteger
     }
 
 
-    
     /// <summary>
     /// Probabilistic prime test based on Rabin-Miller's
     /// </summary>
     /// <remarks>
-    /// for any p > 0 with p - 1 = 2^s * t
+    /// for any p &gt; 0 with p - 1 = 2^s * t
     ///
-    /// p is probably prime (strong pseudoprime) if for any a &lt p,
+    /// p is probably prime (strong pseudoprime) if for any a &lt; p,
     /// 1) a^t mod p = 1 or
-    /// 2) a^((2^j)*t) mod p = p-1 for some 0 &lt= j &lt= s-1
+    /// 2) a^((2^j)*t) mod p = p-1 for some 0 &lt;= j &lt;= s-1
     ///
     /// Otherwise, p is composite.
     /// </remarks>
@@ -1869,7 +1877,7 @@ public class BigInteger
     /// Probabilistic prime test based on Solovay-Strassen (Euler Criterion)
     /// </summary>
     /// <remarks>
-    ///  p is probably prime if for any a &lt p (a is not multiple of p),
+    ///  p is probably prime if for any a &lt; p (a is not multiple of p),
     /// a^((p-1)/2) mod p = J(a, p)
     ///
     /// where J is the Jacobi symbol.
@@ -1957,7 +1965,7 @@ public class BigInteger
     /// Let n be an odd number with gcd(n,D) = 1, and n - J(D, n) = 2^s * d
     /// with d odd and s >= 0.
     ///
-    /// If Ud mod n = 0 or V2^r*d mod n = 0 for some 0 &lt= r &lt s, then n
+    /// If Ud mod n = 0 or V2^r*d mod n = 0 for some 0 &lt;= r &lt; s, then n
     /// is a strong Lucas pseudoprime with parameters (P, Q).  We select
     /// P and Q based on Selfridge.
     /// </remarks>
@@ -2108,7 +2116,7 @@ public class BigInteger
     /// Determines whether a number is probably prime using the Rabin-Miller's test
     /// </summary>
     /// <remarks>
-    /// Before applying the test, the number is tested for divisibility by primes &lt 2000
+    /// Before applying the test, the number is tested for divisibility by primes &lt; 2000
     /// </remarks>
     /// <param name="confidence">Number of chosen bases</param>
     /// <returns>True if this is probably prime</returns>
@@ -2277,7 +2285,6 @@ public class BigInteger
     }
 
 
-
     /// <summary>
     /// Computes the Jacobi Symbol for 2 BigInteger a and b
     /// </summary>
@@ -2337,7 +2344,6 @@ public class BigInteger
             return (s * Jacobi(b % a1, a1));
     }
 
-
     
     /// <summary>
     /// Generates a positive BigInteger that is probably prime
@@ -2386,6 +2392,7 @@ public class BigInteger
 
         return result;
     }
+
 
     /// <summary>
     /// Returns the modulo inverse of this
@@ -2442,7 +2449,6 @@ public class BigInteger
 
         return result;
     }
-
 
 
     /// <summary>
@@ -2520,6 +2526,7 @@ public class BigInteger
             this.dataLength = (int)bytePos + 1;
     }
 
+
     /// <summary>
     /// Sets the value of the specified bit to 0
     /// </summary>
@@ -2550,7 +2557,7 @@ public class BigInteger
     /// Returns a value that is equivalent to the integer square root of this
     /// </summary>
     /// <remarks>
-    /// The integer square root of "this" is defined as the largest integer n, such that (n * n) &lt= this
+    /// The integer square root of "this" is defined as the largest integer n, such that (n * n) &lt;= this
     /// </remarks>
     /// <returns>Integer square root of this</returns>
     public BigInteger sqrt()
