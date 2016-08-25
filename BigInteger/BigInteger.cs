@@ -8,6 +8,8 @@ using System;
 /// <remarks>
 /// This class contains overloaded arithmetic operators(+, -, *, /, %), bitwise operators(&, |) and other
 /// operations that can be done with normal integer. It also contains implementation of various prime test.
+/// This class also contains methods dealing with cryptography such as generating prime number, generating 
+/// a coprime number.
 /// </remarks>
 
 public class BigInteger
@@ -1477,16 +1479,15 @@ public class BigInteger
 
 
 
-    //***********************************************************************
-    // Fast calculation of modular reduction using Barrett's reduction.
-    // Requires x < b^(2k), where b is the base.  In this case, base is
-    // 2^32 (uint).
-    //
-    // Reference [4]
-    //***********************************************************************
+
     /// <summary>
     /// Fast calculation of modular reduction using Barrett's reduction
     /// </summary>
+    /// <remarks>
+    /// Requires x &lt b^(2k), where b is the base.  In this case, base is 2^32 (uint).
+    ///
+    /// Reference [4]
+    /// </remarks>
     /// <param name="x"></param>
     /// <param name="n"></param>
     /// <param name="constant"></param>
@@ -1672,31 +1673,19 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Probabilistic prime test based on Fermat's little theorem
-    //
-    // for any a < p (p does not divide a) if
-    //      a^(p-1) mod p != 1 then p is not prime.
-    //
-    // Otherwise, p is probably prime (pseudoprime to the chosen base).
-    //
-    // Returns
-    // -------
-    // True if "this" is a pseudoprime to randomly chosen
-    // bases.  The number of chosen bases is given by the "confidence"
-    // parameter.
-    //
-    // False if "this" is definitely NOT prime.
-    //
-    // Note - this method is fast but fails for Carmichael numbers except
-    // when the randomly chosen base is a factor of the number.
-    //
-    //***********************************************************************
     /// <summary>
     /// Probabilistic prime test based on Fermat's little theorem
     /// </summary>
+    /// <remarks>
+    /// for any a &lt p (p does not divide a) if
+    ///      a^(p-1) mod p != 1 then p is not prime.
+    ///
+    /// Otherwise, p is probably prime (pseudoprime to the chosen base).
+    /// 
+    /// This method is fast but fails for Carmichael numbers when the randomly chosen base is a factor of the number.
+    /// </remarks>
     /// <param name="confidence">Number of chosen bases</param>
-    /// <returns>True if this is a pseudoprime to randomly chosen</returns>
+    /// <returns>True if this is a pseudoprime to randomly chosen bases</returns>
     public bool FermatLittleTest(int confidence)
     {
         BigInteger thisVal;
@@ -1763,29 +1752,19 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Probabilistic prime test based on Rabin-Miller's
-    //
-    // for any p > 0 with p - 1 = 2^s * t
-    //
-    // p is probably prime (strong pseudoprime) if for any a < p,
-    // 1) a^t mod p = 1 or
-    // 2) a^((2^j)*t) mod p = p-1 for some 0 <= j <= s-1
-    //
-    // Otherwise, p is composite.
-    //
-    // Returns
-    // -------
-    // True if "this" is a strong pseudoprime to randomly chosen
-    // bases.  The number of chosen bases is given by the "confidence"
-    // parameter.
-    //
-    // False if "this" is definitely NOT prime.
-    //
-    //***********************************************************************
+    
     /// <summary>
     /// Probabilistic prime test based on Rabin-Miller's
     /// </summary>
+    /// <remarks>
+    /// for any p > 0 with p - 1 = 2^s * t
+    ///
+    /// p is probably prime (strong pseudoprime) if for any a &lt p,
+    /// 1) a^t mod p = 1 or
+    /// 2) a^((2^j)*t) mod p = p-1 for some 0 &lt= j &lt= s-1
+    ///
+    /// Otherwise, p is composite.
+    /// </remarks>
     /// <param name="confidence">Number of chosen bases</param>
     /// <returns>True if this is a strong pseudoprime to randomly chosen bases</returns>
     public bool RabinMillerTest(int confidence)
@@ -1886,28 +1865,17 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Probabilistic prime test based on Solovay-Strassen (Euler Criterion)
-    //
-    // p is probably prime if for any a < p (a is not multiple of p),
-    // a^((p-1)/2) mod p = J(a, p)
-    //
-    // where J is the Jacobi symbol.
-    //
-    // Otherwise, p is composite.
-    //
-    // Returns
-    // -------
-    // True if "this" is a Euler pseudoprime to randomly chosen
-    // bases.  The number of chosen bases is given by the "confidence"
-    // parameter.
-    //
-    // False if "this" is definitely NOT prime.
-    //
-    //***********************************************************************
     /// <summary>
     /// Probabilistic prime test based on Solovay-Strassen (Euler Criterion)
     /// </summary>
+    /// <remarks>
+    ///  p is probably prime if for any a &lt p (a is not multiple of p),
+    /// a^((p-1)/2) mod p = J(a, p)
+    ///
+    /// where J is the Jacobi symbol.
+    ///
+    /// Otherwise, p is composite.
+    /// </remarks>
     /// <param name="confidence">Number of chosen bases</param>
     /// <returns>True if this is a Euler pseudoprime to randomly chosen bases</returns>
     public bool SolovayStrassenTest(int confidence)
@@ -1982,22 +1950,17 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Implementation of the Lucas Strong Pseudo Prime test.
-    //
-    // Let n be an odd number with gcd(n,D) = 1, and n - J(D, n) = 2^s * d
-    // with d odd and s >= 0.
-    //
-    // If Ud mod n = 0 or V2^r*d mod n = 0 for some 0 <= r < s, then n
-    // is a strong Lucas pseudoprime with parameters (P, Q).  We select
-    // P and Q based on Selfridge.
-    //
-    // Returns True if number is a strong Lucus pseudo prime.
-    // Otherwise, returns False indicating that number is composite.
-    //***********************************************************************
     /// <summary>
     /// Implementation of the Lucas Strong Pseudo Prime test
     /// </summary>
+    /// <remarks>
+    /// Let n be an odd number with gcd(n,D) = 1, and n - J(D, n) = 2^s * d
+    /// with d odd and s >= 0.
+    ///
+    /// If Ud mod n = 0 or V2^r*d mod n = 0 for some 0 &lt= r &lt s, then n
+    /// is a strong Lucas pseudoprime with parameters (P, Q).  We select
+    /// P and Q based on Selfridge.
+    /// </remarks>
     /// <returns>True if number is a strong Lucus pseudo prime</returns>
     public bool LucasStrongTest()
     {
@@ -2141,16 +2104,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Determines whether a number is probably prime, using the Rabin-Miller's
-    // test.  Before applying the test, the number is tested for divisibility
-    // by primes < 2000
-    //
-    // Returns true if number is probably prime.
-    //***********************************************************************
     /// <summary>
     /// Determines whether a number is probably prime using the Rabin-Miller's test
     /// </summary>
+    /// <remarks>
+    /// Before applying the test, the number is tested for divisibility by primes &lt 2000
+    /// </remarks>
     /// <param name="confidence">Number of chosen bases</param>
     /// <returns>True if this is probably prime</returns>
     public bool isProbablePrime(int confidence)
@@ -2181,30 +2140,22 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Determines whether this BigInteger is probably prime using a
-    // combination of base 2 strong pseudoprime test and Lucas strong
-    // pseudoprime test.
-    //
-    // The sequence of the primality test is as follows,
-    //
-    // 1) Trial divisions are carried out using prime numbers below 2000.
-    //    if any of the primes divides this BigInteger, then it is not prime.
-    //
-    // 2) Perform base 2 strong pseudoprime test.  If this BigInteger is a
-    //    base 2 strong pseudoprime, proceed on to the next step.
-    //
-    // 3) Perform strong Lucas pseudoprime test.
-    //
-    // Returns True if this BigInteger is both a base 2 strong pseudoprime
-    // and a strong Lucas pseudoprime.
-    //
-    // For a detailed discussion of this primality test, see [6].
-    //
-    //***********************************************************************
     /// <summary>
     /// Determines whether this BigInteger is probably prime using a combination of base 2 strong pseudoprime test and Lucas strong pseudoprime test 
     /// </summary>
+    /// <remarks>
+    /// The sequence of the primality test is as follows,
+    ///
+    /// 1) Trial divisions are carried out using prime numbers below 2000.
+    ///    if any of the primes divides this BigInteger, then it is not prime.
+    ///
+    /// 2) Perform base 2 strong pseudoprime test.  If this BigInteger is a
+    ///    base 2 strong pseudoprime, proceed on to the next step.
+    ///
+    /// 3) Perform strong Lucas pseudoprime test.
+    /// 
+    /// For a detailed discussion of this primality test, see [6].
+    /// </remarks>
     /// <returns>True if this is probably prime</returns>
     public bool isProbablePrime()
     {
@@ -2326,13 +2277,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Computes the Jacobi Symbol for a and b.
-    // Algorithm adapted from [3] and [4] with some optimizations
-    //***********************************************************************
+
     /// <summary>
     /// Computes the Jacobi Symbol for 2 BigInteger a and b
     /// </summary>
+    /// <remarks>
+    /// Algorithm adapted from [3] and [4] with some optimizations
+    /// </remarks>
     /// <param name="a">Any BigInteger</param>
     /// <param name="b">Odd BigInteger</param>
     /// <returns>Jacobi Symbol</returns>
@@ -2412,10 +2363,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Generates a random number with the specified number of bits such
-    // that gcd(number, this) = 1
-    //***********************************************************************
+    /// <summary>
+    /// Generates a random number with the specified number of bits such that gcd(number, this) = 1
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="rand">Random object</param>
+    /// <returns>Relatively prime number of this</returns>
     public BigInteger genCoPrime(int bits, Random rand)
     {
         bool done = false;
@@ -2434,11 +2387,14 @@ public class BigInteger
         return result;
     }
 
-
-    //***********************************************************************
-    // Returns the modulo inverse of this.  Throws ArithmeticException if
-    // the inverse does not exist.  (i.e. gcd(this, modulus) != 1)
-    //***********************************************************************
+    /// <summary>
+    /// Returns the modulo inverse of this
+    /// </summary>
+    /// <remarks>
+    /// Throws ArithmeticException if the inverse does not exist.  (i.e. gcd(this, modulus) != 1)
+    /// </remarks>
+    /// <param name="modulus"></param>
+    /// <returns>Modulo inverse of this</returns>
     public BigInteger modInverse(BigInteger modulus)
     {
         BigInteger[] p = { 0, 1 };
@@ -2488,10 +2444,14 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the value of the BigInteger as a byte array.  The lowest
-    // index contains the MSB.
-    //***********************************************************************
+
+    /// <summary>
+    /// Returns the value of the BigInteger as a byte array
+    /// </summary>
+    /// <remarks>
+    /// The lowest index contains the MSB
+    /// </remarks>
+    /// <returns>Byte array containing value of the BigInteger</returns>
     public byte[] getBytes()
     {
         int numBits = bitCount();
@@ -2541,10 +2501,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Sets the value of the specified bit to 1
-    // The Least Significant Bit position is 0.
-    //***********************************************************************
+    /// <summary>
+    /// Sets the value of the specified bit to 1
+    /// </summary>
+    /// <remarks>
+    /// The Least Significant Bit position is 0
+    /// </remarks>
+    /// <param name="bitNum">The position of bit to be changed</param>
     public void setBit(uint bitNum)
     {
         uint bytePos = bitNum >> 5;             // divide by 32
@@ -2557,11 +2520,13 @@ public class BigInteger
             this.dataLength = (int)bytePos + 1;
     }
 
-
-    //***********************************************************************
-    // Sets the value of the specified bit to 0
-    // The Least Significant Bit position is 0.
-    //***********************************************************************
+    /// <summary>
+    /// Sets the value of the specified bit to 0
+    /// </summary>
+    /// <remarks>
+    /// The Least Significant Bit position is 0
+    /// </remarks>
+    /// <param name="bitNum">The position of bit to be changed</param>
     public void unsetBit(uint bitNum)
     {
         uint bytePos = bitNum >> 5;
@@ -2581,14 +2546,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns a value that is equivalent to the integer square root
-    // of the BigInteger.
-    //
-    // The integer square root of "this" is defined as the largest integer n
-    // such that (n * n) <= this
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns a value that is equivalent to the integer square root of this
+    /// </summary>
+    /// <remarks>
+    /// The integer square root of "this" is defined as the largest integer n, such that (n * n) &lt= this
+    /// </remarks>
+    /// <returns>Integer square root of this</returns>
     public BigInteger sqrt()
     {
         uint numBits = (uint)this.bitCount();
@@ -2632,37 +2596,43 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the k_th number in the Lucas Sequence reduced modulo n.
-    //
-    // Uses index doubling to speed up the process.  For example, to calculate V(k),
-    // we maintain two numbers in the sequence V(n) and V(n+1).
-    //
-    // To obtain V(2n), we use the identity
-    //      V(2n) = (V(n) * V(n)) - (2 * Q^n)
-    // To obtain V(2n+1), we first write it as
-    //      V(2n+1) = V((n+1) + n)
-    // and use the identity
-    //      V(m+n) = V(m) * V(n) - Q * V(m-n)
-    // Hence,
-    //      V((n+1) + n) = V(n+1) * V(n) - Q^n * V((n+1) - n)
-    //                   = V(n+1) * V(n) - Q^n * V(1)
-    //                   = V(n+1) * V(n) - Q^n * P
-    //
-    // We use k in its binary expansion and perform index doubling for each
-    // bit position.  For each bit position that is set, we perform an
-    // index doubling followed by an index addition.  This means that for V(n),
-    // we need to update it to V(2n+1).  For V(n+1), we need to update it to
-    // V((2n+1)+1) = V(2*(n+1))
-    //
-    // This function returns
-    // [0] = U(k)
-    // [1] = V(k)
-    // [2] = Q^n
-    //
-    // Where U(0) = 0 % n, U(1) = 1 % n
-    //       V(0) = 2 % n, V(1) = P % n
-    //***********************************************************************
+    /// <summary>
+    /// Returns the k_th number in the Lucas Sequence reduced modulo n
+    /// </summary>
+    /// <remarks>
+    /// Uses index doubling to speed up the process.  For example, to calculate V(k),
+    /// we maintain two numbers in the sequence V(n) and V(n+1).
+    ///
+    /// To obtain V(2n), we use the identity
+    ///      V(2n) = (V(n) * V(n)) - (2 * Q^n)
+    /// To obtain V(2n+1), we first write it as
+    ///      V(2n+1) = V((n+1) + n)
+    /// and use the identity
+    ///      V(m+n) = V(m) * V(n) - Q * V(m-n)
+    /// Hence,
+    ///      V((n+1) + n) = V(n+1) * V(n) - Q^n * V((n+1) - n)
+    ///                   = V(n+1) * V(n) - Q^n * V(1)
+    ///                   = V(n+1) * V(n) - Q^n * P
+    ///
+    /// We use k in its binary expansion and perform index doubling for each
+    /// bit position.  For each bit position that is set, we perform an
+    /// index doubling followed by an index addition.  This means that for V(n),
+    /// we need to update it to V(2n+1).  For V(n+1), we need to update it to
+    /// V((2n+1)+1) = V(2*(n+1))
+    ///
+    /// This function returns
+    /// [0] = U(k)
+    /// [1] = V(k)
+    /// [2] = Q^n
+    ///
+    /// Where U(0) = 0 % n, U(1) = 1 % n
+    ///       V(0) = 2 % n, V(1) = P % n
+    /// </remarks>
+    /// <param name="P"></param>
+    /// <param name="Q"></param>
+    /// <param name="k"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
     public static BigInteger[] LucasSequence(BigInteger P, BigInteger Q,
                                              BigInteger k, BigInteger n)
     {
