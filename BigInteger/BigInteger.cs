@@ -1,8 +1,14 @@
 using System;
 
+// compile with: /doc:BigIntegerDocComment.xml
+
 /// <summary>
-/// This is a BigInteger class
+/// This is a BigInteger class. Holds integer that is more than 64-bit (long).
 /// </summary>
+/// <remarks>
+/// This class contains overloaded arithmetic operators(+, -, *, /, %), bitwise operators(&, |) and other
+/// operations that can be done with normal integer. It also contains implementation of various prime test.
+/// </remarks>
 
 public class BigInteger
 {
@@ -1596,9 +1602,6 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Populates "this" with the specified amount of random bits
-    //***********************************************************************
     /// <summary>
     /// Populates "this" with the specified amount of random bits
     /// </summary>
@@ -1638,16 +1641,17 @@ public class BigInteger
             dataLength = 1;
     }
 
-
-    //***********************************************************************
-    // Returns the position of the most significant bit in the BigInteger.
-    //
-    // Eg.  The result is 1, if the value of BigInteger is 0...0000 0000
-    //      The result is 1, if the value of BigInteger is 0...0000 0001
-    //      The result is 2, if the value of BigInteger is 0...0000 0010
-    //      The result is 2, if the value of BigInteger is 0...0000 0011
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns the position of the most significant bit in the BigInteger
+    /// </summary>
+    /// <example>
+    /// 1) The result is 1, if the value of BigInteger is 0...0000 0000
+    /// 2) The result is 1, if the value of BigInteger is 0...0000 0001
+    /// 3) The result is 2, if the value of BigInteger is 0...0000 0010
+    /// 4) The result is 2, if the value of BigInteger is 0...0000 0011
+    /// 5) The result is 5, if the value of BigInteger is 0...0001 0011
+    /// </example>
+    /// <returns></returns>
     public int bitCount()
     {
         while (dataLength > 1 && data[dataLength - 1] == 0)
@@ -1688,6 +1692,11 @@ public class BigInteger
     // when the randomly chosen base is a factor of the number.
     //
     //***********************************************************************
+    /// <summary>
+    /// Probabilistic prime test based on Fermat's little theorem
+    /// </summary>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is a pseudoprime to randomly chosen</returns>
     public bool FermatLittleTest(int confidence)
     {
         BigInteger thisVal;
@@ -1774,6 +1783,11 @@ public class BigInteger
     // False if "this" is definitely NOT prime.
     //
     //***********************************************************************
+    /// <summary>
+    /// Probabilistic prime test based on Rabin-Miller's
+    /// </summary>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is a strong pseudoprime to randomly chosen bases</returns>
     public bool RabinMillerTest(int confidence)
     {
         BigInteger thisVal;
@@ -1891,6 +1905,11 @@ public class BigInteger
     // False if "this" is definitely NOT prime.
     //
     //***********************************************************************
+    /// <summary>
+    /// Probabilistic prime test based on Solovay-Strassen (Euler Criterion)
+    /// </summary>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is a Euler pseudoprime to randomly chosen bases</returns>
     public bool SolovayStrassenTest(int confidence)
     {
         BigInteger thisVal;
@@ -1976,6 +1995,10 @@ public class BigInteger
     // Returns True if number is a strong Lucus pseudo prime.
     // Otherwise, returns False indicating that number is composite.
     //***********************************************************************
+    /// <summary>
+    /// Implementation of the Lucas Strong Pseudo Prime test
+    /// </summary>
+    /// <returns>True if number is a strong Lucus pseudo prime</returns>
     public bool LucasStrongTest()
     {
         BigInteger thisVal;
@@ -2125,6 +2148,11 @@ public class BigInteger
     //
     // Returns true if number is probably prime.
     //***********************************************************************
+    /// <summary>
+    /// Determines whether a number is probably prime using the Rabin-Miller's test
+    /// </summary>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is probably prime</returns>
     public bool isProbablePrime(int confidence)
     {
         BigInteger thisVal;
@@ -2174,6 +2202,10 @@ public class BigInteger
     // For a detailed discussion of this primality test, see [6].
     //
     //***********************************************************************
+    /// <summary>
+    /// Determines whether this BigInteger is probably prime using a combination of base 2 strong pseudoprime test and Lucas strong pseudoprime test 
+    /// </summary>
+    /// <returns>True if this is probably prime</returns>
     public bool isProbablePrime()
     {
         BigInteger thisVal;
@@ -2261,19 +2293,20 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Returns the lowest 4 bytes of the BigInteger as an int.
-    //***********************************************************************
+    /// <summary>
+    /// Returns the lowest 4 bytes of the BigInteger as an int
+    /// </summary>
+    /// <returns>Lowest 4 bytes as integer</returns>
     public int IntValue()
     {
         return (int)data[0];
     }
 
 
-    //***********************************************************************
-    // Returns the lowest 8 bytes of the BigInteger as a long.
-    //***********************************************************************
+    /// <summary>
+    /// Returns the lowest 8 bytes of the BigInteger as a long
+    /// </summary>
+    /// <returns>Lowest 8 bytes as long</returns>
     public long LongValue()
     {
         long val = 0;
@@ -2297,6 +2330,12 @@ public class BigInteger
     // Computes the Jacobi Symbol for a and b.
     // Algorithm adapted from [3] and [4] with some optimizations
     //***********************************************************************
+    /// <summary>
+    /// Computes the Jacobi Symbol for 2 BigInteger a and b
+    /// </summary>
+    /// <param name="a">Any BigInteger</param>
+    /// <param name="b">Odd BigInteger</param>
+    /// <returns>Jacobi Symbol</returns>
     public static int Jacobi(BigInteger a, BigInteger b)
     {
         // Jacobi defined only for odd integers
@@ -2352,6 +2391,13 @@ public class BigInteger
     //***********************************************************************
     // Generates a positive BigInteger that is probably prime.
     //***********************************************************************
+    /// <summary>
+    /// Generates a positive BigInteger that is probably prime
+    /// </summary>
+    /// <param name="bits"></param>
+    /// <param name="confidence"></param>
+    /// <param name="rand"></param>
+    /// <returns></returns>
     public static BigInteger genPseudoPrime(int bits, int confidence, Random rand)
     {
         BigInteger result = new BigInteger();
