@@ -1,5 +1,9 @@
 using System;
 
+/// <summary>
+/// This is a BigInteger class
+/// </summary>
+
 public class BigInteger
 {
     // maximum length of the BigInteger in uint (4 bytes)
@@ -29,10 +33,9 @@ public class BigInteger
     private uint[] data = null;            // stores bytes from the Big Integer
     public int dataLength;                 // number of actual chars used
 
-
-    //***********************************************************************
-    // Constructor (Default value for BigInteger is 0
-    //***********************************************************************
+    /// <summary>
+    /// Default constructor for BigInteger of value 0
+    /// </summary>
     public BigInteger()
     {
         data = new uint[maxLength];
@@ -40,9 +43,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by long)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by long)
+    /// </summary>
+    /// <param name="value">Turn the long value into BigInteger type</param>
     public BigInteger(long value)
     {
         data = new uint[maxLength];
@@ -74,9 +78,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by ulong)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by ulong)
+    /// </summary>
+    /// <param name="value">Turn the unsigned long value into BigInteger type</param>
     public BigInteger(ulong value)
     {
         data = new uint[maxLength];
@@ -98,11 +103,10 @@ public class BigInteger
             dataLength = 1;
     }
 
-
-
-    //***********************************************************************
-    // Constructor (Default value provided by BigInteger)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by BigInteger)
+    /// </summary>
+    /// <param name="bi"></param>
     public BigInteger(BigInteger bi)
     {
         data = new uint[maxLength];
@@ -114,30 +118,18 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by a string of digits of the
-    //              specified base)
-    //
-    // Example (base 10)
-    // -----------------
-    // To initialize "a" with the default value of 1234 in base 10
-    //      BigInteger a = new BigInteger("1234", 10)
-    //
-    // To initialize "a" with the default value of -1234
-    //      BigInteger a = new BigInteger("-1234", 10)
-    //
-    // Example (base 16)
-    // -----------------
-    // To initialize "a" with the default value of 0x1D4F in base 16
-    //      BigInteger a = new BigInteger("1D4F", 16)
-    //
-    // To initialize "a" with the default value of -0x1D4F
-    //      BigInteger a = new BigInteger("-1D4F", 16)
-    //
-    // Note that string values are specified in the <sign><magnitude>
-    // format.
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by a string of digits of the specified base)
+    /// </summary>
+    /// <example>
+    /// To initialize "a" with the default value of 1234 in base 10:
+    ///      BigInteger a = new BigInteger("1234", 10)
+    /// To initialize "a" with the default value of -0x1D4F in base 16:
+    ///      BigInteger a = new BigInteger("-1D4F", 16)
+    /// </example>
+    /// 
+    /// <param name="value">String value in the format of [sign][magnitude]</param>
+    /// <param name="radix">The base of value</param>
     public BigInteger(string value, int radix)
     {
         BigInteger multiplier = new BigInteger(1);
@@ -242,10 +234,12 @@ public class BigInteger
     }*/
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by an array of bytes of the
-    // specified length.)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by an array of bytes of the specified length.)
+    /// </summary>
+    /// <param name="inData">A list of byte values</param>
+    /// <param name="length">Default -1</param>
+    /// <param name="offset">Default 0</param>
     public BigInteger(System.Collections.Generic.IList<byte> inData, int length = -1, int offset = 0)
     {
         var inLen = length == -1 ? inData.Count - offset : length;
@@ -282,11 +276,11 @@ public class BigInteger
         while (dataLength > 1 && data[dataLength - 1] == 0)
             dataLength--;
     }
-
-
-    //***********************************************************************
-    // Constructor (Default value provided by an array of unsigned integers)
-    //*********************************************************************
+    
+    /// <summary>
+    ///  Constructor (Default value provided by an array of unsigned integers)
+    /// </summary>
+    /// <param name="inData">Array of unsigned integer</param>
     public BigInteger(uint[] inData)
     {
         dataLength = inData.Length;
@@ -303,35 +297,48 @@ public class BigInteger
             dataLength--;
     }
 
-
-    //***********************************************************************
-    // Overloading of the typecast operator.
-    // For BigInteger bi = 10;
-    //***********************************************************************
+    /// <summary>
+    /// Cast a type long value to type BigInteger value
+    /// </summary>
+    /// <param name="value">A long value</param>
     public static implicit operator BigInteger(long value)
     {
         return (new BigInteger(value));
     }
 
+    /// <summary>
+    /// Cast a type ulong value to type BigInteger value
+    /// </summary>
+    /// <param name="value">An unsigned long value</param>
     public static implicit operator BigInteger(ulong value)
     {
         return (new BigInteger(value));
     }
 
+    /// <summary>
+    /// Cast a type int value to type BigInteger value
+    /// </summary>
+    /// <param name="value">An int value</param>
     public static implicit operator BigInteger(int value)
     {
         return (new BigInteger((long)value));
     }
 
+    /// <summary>
+    /// Cast a type uint value to type BigInteger value
+    /// </summary>
+    /// <param name="value">An unsigned int value</param>
     public static implicit operator BigInteger(uint value)
     {
         return (new BigInteger((ulong)value));
     }
 
-
-    //***********************************************************************
-    // Overloading of addition operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of addition operator, support addition of BigInteger type
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Result of the addition of 2 BigInteger</returns>
     public static BigInteger operator +(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -367,10 +374,11 @@ public class BigInteger
         return result;
     }
 
-
-    //***********************************************************************
-    // Overloading of the unary ++ operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary ++ operator, support BigInteger to be incremented by 1
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Incremented BigInteger</returns>
     public static BigInteger operator ++(BigInteger bi1)
     {
         BigInteger result = new BigInteger(bi1);
@@ -411,10 +419,12 @@ public class BigInteger
         return result;
     }
 
-
-    //***********************************************************************
-    // Overloading of subtraction operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of subtraction operator, support subtraction of BigInteger type
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Result of the subtraction of 2 BigIntegerr</returns>
     public static BigInteger operator -(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -459,10 +469,11 @@ public class BigInteger
         return result;
     }
 
-
-    //***********************************************************************
-    // Overloading of the unary -- operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary -- operator, support BigInteger to be decremented by 1
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Decremented BigInteger</returns>
     public static BigInteger operator --(BigInteger bi1)
     {
         BigInteger result = new BigInteger(bi1);
@@ -506,9 +517,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of multiplication operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of multiplication operator, support multiplication of BigInteger type
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Result of the multiplication of 2 BigIntegerr</returns>
     public static BigInteger operator *(BigInteger bi1, BigInteger bi2)
     {
         int lastPos = maxLength - 1;
@@ -601,9 +615,13 @@ public class BigInteger
 
 
 
-    //***********************************************************************
-    // Overloading of unary << operators
-    //***********************************************************************
+
+    /// <summary>
+    /// Overloading of the unary &lt&lt operator, support BigInteger to have left-shifted
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <param name="shiftVal">Left shift by shiftVal bit</param>
+    /// <returns>Left-shifted BigInteger</returns>
     public static BigInteger operator <<(BigInteger bi1, int shiftVal)
     {
         BigInteger result = new BigInteger(bi1);
@@ -649,11 +667,14 @@ public class BigInteger
         }
         return bufLen;
     }
+    
 
-
-    //***********************************************************************
-    // Overloading of unary >> operators
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary &gt&gt operator, support BigInteger to have right-shifted
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <param name="shiftVal">Right shift by shiftVal bit</param>
+    /// <returns>Right-shifted BigInteger</returns>
     public static BigInteger operator >>(BigInteger bi1, int shiftVal)
     {
         BigInteger result = new BigInteger(bi1);
@@ -716,11 +737,12 @@ public class BigInteger
 
         return bufLen;
     }
-
-
-    //***********************************************************************
-    // Overloading of the NOT operator (1's complement)
-    //***********************************************************************
+    
+    /// <summary>
+    /// Overloading of the NOT operator (1's complement), support complementing of BigInteger type bit by bit
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Complemented BigInteger</returns>
     public static BigInteger operator ~(BigInteger bi1)
     {
         BigInteger result = new BigInteger(bi1);
@@ -737,9 +759,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of the NEGATE operator (2's complement)
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the NEGATE operator (2's complement), support negating of BigInteger type
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Negated BigInteger or default BigInteger value if bi1 is 0</returns>
     public static BigInteger operator -(BigInteger bi1)
     {
         // handle neg of zero separately since it'll cause an overflow
@@ -778,23 +802,34 @@ public class BigInteger
             result.dataLength--;
         return result;
     }
-
-
-    //***********************************************************************
-    // Overloading of equality operator
-    //***********************************************************************
+    
+    /// <summary>
+    /// Overloading of equality operator, allow comparing 2 BigInteger type with == operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator ==(BigInteger bi1, BigInteger bi2)
     {
         return bi1.Equals(bi2);
     }
 
-
+    /// <summary>
+    /// Overloading of not equal operator, allow comparing 2 BigInteger type with != operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator !=(BigInteger bi1, BigInteger bi2)
     {
         return !(bi1.Equals(bi2));
     }
 
-
+    /// <summary>
+    /// Overriding of Equals method, allow comparing BigInteger with an arbitary object
+    /// </summary>
+    /// <param name="o">Input object, to be casted into BigInteger type for comparison</param>
+    /// <returns>Boolean result of the comparison</returns>
     public override bool Equals(object o)
     {
         BigInteger bi = (BigInteger)o;
@@ -817,9 +852,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of inequality operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &gt operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator >(BigInteger bi1, BigInteger bi2)
     {
         int pos = maxLength - 1;
@@ -845,7 +883,12 @@ public class BigInteger
         return false;
     }
 
-
+    /// <summary>
+    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &lt operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator <(BigInteger bi1, BigInteger bi2)
     {
         int pos = maxLength - 1;
@@ -871,13 +914,23 @@ public class BigInteger
         return false;
     }
 
-
+    /// <summary>
+    /// Overloading of greater than or equal to operator, allow comparing 2 BigInteger type with &gt= operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator >=(BigInteger bi1, BigInteger bi2)
     {
         return (bi1 == bi2 || bi1 > bi2);
     }
 
-
+    /// <summary>
+    /// Overloading of less than or equal to operator, allow comparing 2 BigInteger type with &lt= operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator <=(BigInteger bi1, BigInteger bi2)
     {
         return (bi1 == bi2 || bi1 < bi2);
@@ -1047,9 +1100,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of division operator
-    //***********************************************************************
+   
+    /// <summary>
+    /// Overloading of division operator, support division of 2 BigInteger type
+    /// </summary>
+    /// <param name="bi1">Dividend</param>
+    /// <param name="bi2">Divisor</param>
+    /// <returns>Quotient of the division</returns>
     public static BigInteger operator /(BigInteger bi1, BigInteger bi2)
     {
         BigInteger quotient = new BigInteger();
@@ -1089,9 +1146,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of modulus operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of modulus operator, support modulo operation of BigInteger type
+    /// </summary>
+    /// <param name="bi1">Dividend</param>
+    /// <param name="bi2">Divisor</param>
+    /// <returns>Remainder of the division</returns>
     public static BigInteger operator %(BigInteger bi1, BigInteger bi2)
     {
         BigInteger quotient = new BigInteger();
@@ -1128,9 +1188,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of bitwise AND operator
-    //***********************************************************************
+
+    /// <summary>
+    /// Overloading of bitwise AND operator, support bitwise and operation on BigInteger type
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>BigInteger result after performing & operation</returns>
     public static BigInteger operator &(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1152,9 +1216,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of bitwise OR operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of bitwise OR operator, support bitwise or operation on BigInteger type
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>BigInteger result after performing | operation</returns>
     public static BigInteger operator |(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1176,9 +1243,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of bitwise XOR operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of bitwise XOR operator, support bitwise xor operation on BigInteger type
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>BigInteger result after performing ^ operation</returns>
     public static BigInteger operator ^(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1200,9 +1270,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns max(this, bi)
-    //***********************************************************************
+
+    /// <summary>
+    /// Compare this and a BigInteger and find the maximum one
+    /// </summary>
+    /// <param name="bi">BigInteger to be compared with this</param>
+    /// <returns>The bigger value of this and bi</returns>
     public BigInteger max(BigInteger bi)
     {
         if (this > bi)
@@ -1212,9 +1285,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns min(this, bi)
-    //***********************************************************************
+    /// <summary>
+    /// Compare this and a BigInteger and find the minimum one
+    /// </summary>
+    /// <param name="bi">BigInteger to be compared with this</param>
+    /// <returns>The smaller value of this and bi</returns>
     public BigInteger min(BigInteger bi)
     {
         if (this < bi)
@@ -1225,9 +1300,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the absolute value
-    //***********************************************************************
+    /// <summary>
+    /// Returns the absolute value
+    /// </summary>
+    /// <returns>Absolute value of this</returns>
     public BigInteger abs()
     {
         if ((this.data[maxLength - 1] & 0x80000000) != 0)
@@ -1236,26 +1312,22 @@ public class BigInteger
             return (new BigInteger(this));
     }
 
-
-    //***********************************************************************
-    // Returns a string representing the BigInteger in base 10.
-    //***********************************************************************
+    /// <summary>
+    /// Returns a string representing the BigInteger in base 10
+    /// </summary>
+    /// <returns>string representation of the BigInteger</returns>
     public override string ToString()
     {
         return ToString(10);
     }
 
 
-    //***********************************************************************
-    // Returns a string representing the BigInteger in sign-and-magnitude
-    // format in the specified radix.
-    //
-    // Example
-    // -------
-    // If the value of BigInteger is -255 in base 10, then
-    // ToString(16) returns "-FF"
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns a string representing the BigInteger in [sign][magnitude] format in the specified radix
+    /// </summary>
+    /// <example>If the value of BigInteger is -255 in base 10, then ToString(16) returns "-FF"</example>
+    /// <param name="radix">Base</param>
+    /// <returns>string representation of the BigInteger in [sign][magnitude] format</returns>
     public string ToString(int radix)
     {
         if (radix < 2 || radix > 36)
@@ -1304,19 +1376,15 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns a hex string showing the contains of the BigInteger
-    //
-    // Examples
-    // -------
-    // 1) If the value of BigInteger is 255 in base 10, then
-    //    ToHexString() returns "FF"
-    //
-    // 2) If the value of BigInteger is -255 in base 10, then
-    //    ToHexString() returns ".....FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF01",
-    //    which is the 2's complement representation of -255.
-    //
-    //***********************************************************************
+
+    /// <summary>
+    /// Returns a hex string showing the contains of the BigInteger
+    /// </summary>
+    /// <example>
+    /// 1) If the value of BigInteger is 255 in base 10, then ToHexString() returns "FF"
+    /// 2) If the value of BigInteger is -255 in base 10, thenToHexString() returns ".....FFFFFFFFFF01", which is the 2's complement representation of -255.
+    /// </example>
+    /// <returns></returns>
     public string ToHexString()
     {
         string result = data[dataLength - 1].ToString("X");
@@ -1331,9 +1399,12 @@ public class BigInteger
 
 
 
-    //***********************************************************************
-    // Modulo Exponentiation
-    //***********************************************************************
+    /// <summary>
+    /// Modulo Exponentiation
+    /// </summary>
+    /// <param name="exp">Exponential</param>
+    /// <param name="n">Modulo</param>
+    /// <returns>BigInteger result of raising this to the power of exp and then modulo n </returns>
     public BigInteger modPow(BigInteger exp, BigInteger n)
     {
         if ((exp.data[maxLength - 1] & 0x80000000) != 0)
@@ -1407,6 +1478,13 @@ public class BigInteger
     //
     // Reference [4]
     //***********************************************************************
+    /// <summary>
+    /// Fast calculation of modular reduction using Barrett's reduction
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="n"></param>
+    /// <param name="constant"></param>
+    /// <returns></returns>
     private BigInteger BarrettReduction(BigInteger x, BigInteger n, BigInteger constant)
     {
         int k = n.dataLength,
@@ -1485,10 +1563,11 @@ public class BigInteger
         return r1;
     }
 
-
-    //***********************************************************************
-    // Returns gcd(this, bi)
-    //***********************************************************************
+    /// <summary>
+    /// Returns gcd(this, bi)
+    /// </summary>
+    /// <param name="bi"></param>
+    /// <returns>Greatest Common Divisor of this and bi</returns>
     public BigInteger gcd(BigInteger bi)
     {
         BigInteger x;
@@ -1520,6 +1599,11 @@ public class BigInteger
     //***********************************************************************
     // Populates "this" with the specified amount of random bits
     //***********************************************************************
+    /// <summary>
+    /// Populates "this" with the specified amount of random bits
+    /// </summary>
+    /// <param name="bits"></param>
+    /// <param name="rand"></param>
     public void genRandomBits(int bits, Random rand)
     {
         int dwords = bits >> 5;

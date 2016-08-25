@@ -456,6 +456,7 @@ namespace BigIntegerTests
         [TestMethod]
         public void TestShiftRight()
         {
+            (new BigInteger()).ToHexString();
         }
 
         [TestMethod]
