@@ -1,5 +1,17 @@
 using System;
 
+// compile with: /doc:BigIntegerDocComment.xml
+
+/// <summary>
+/// This is a BigInteger class. Holds integer that is more than 64-bit (long).
+/// </summary>
+/// <remarks>
+/// This class contains overloaded arithmetic operators(+, -, *, /, %), bitwise operators(&, |) and other
+/// operations that can be done with normal integer. It also contains implementation of various prime test.
+/// This class also contains methods dealing with cryptography such as generating prime number, generating 
+/// a coprime number.
+/// </remarks>
+
 public class BigInteger
 {
     // maximum length of the BigInteger in uint (4 bytes)
@@ -25,14 +37,12 @@ public class BigInteger
         1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 1931, 1933, 1949, 1951, 1973, 1979, 1987,
         1993, 1997, 1999 };
 
-
     private uint[] data = null;            // stores bytes from the Big Integer
     public int dataLength;                 // number of actual chars used
 
-
-    //***********************************************************************
-    // Constructor (Default value for BigInteger is 0
-    //***********************************************************************
+    /// <summary>
+    /// Default constructor for BigInteger of value 0
+    /// </summary>
     public BigInteger()
     {
         data = new uint[maxLength];
@@ -40,9 +50,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by long)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by long)
+    /// </summary>
+    /// <param name="value">Turn the long value into BigInteger type</param>
     public BigInteger(long value)
     {
         data = new uint[maxLength];
@@ -74,9 +85,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by ulong)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by ulong)
+    /// </summary>
+    /// <param name="value">Turn the unsigned long value into BigInteger type</param>
     public BigInteger(ulong value)
     {
         data = new uint[maxLength];
@@ -99,10 +111,10 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Constructor (Default value provided by BigInteger)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by BigInteger)
+    /// </summary>
+    /// <param name="bi"></param>
     public BigInteger(BigInteger bi)
     {
         data = new uint[maxLength];
@@ -114,30 +126,18 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by a string of digits of the
-    //              specified base)
-    //
-    // Example (base 10)
-    // -----------------
-    // To initialize "a" with the default value of 1234 in base 10
-    //      BigInteger a = new BigInteger("1234", 10)
-    //
-    // To initialize "a" with the default value of -1234
-    //      BigInteger a = new BigInteger("-1234", 10)
-    //
-    // Example (base 16)
-    // -----------------
-    // To initialize "a" with the default value of 0x1D4F in base 16
-    //      BigInteger a = new BigInteger("1D4F", 16)
-    //
-    // To initialize "a" with the default value of -0x1D4F
-    //      BigInteger a = new BigInteger("-1D4F", 16)
-    //
-    // Note that string values are specified in the <sign><magnitude>
-    // format.
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by a string of digits of the specified base)
+    /// </summary>
+    /// <example>
+    /// To initialize "a" with the default value of 1234 in base 10:
+    ///      BigInteger a = new BigInteger("1234", 10)
+    /// To initialize "a" with the default value of -0x1D4F in base 16:
+    ///      BigInteger a = new BigInteger("-1D4F", 16)
+    /// </example>
+    /// 
+    /// <param name="value">String value in the format of [sign][magnitude]</param>
+    /// <param name="radix">The base of value</param>
     public BigInteger(string value, int radix)
     {
         BigInteger multiplier = new BigInteger(1);
@@ -242,10 +242,12 @@ public class BigInteger
     }*/
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by an array of bytes of the
-    // specified length.)
-    //***********************************************************************
+    /// <summary>
+    /// Constructor (Default value provided by an array of bytes of the specified length.)
+    /// </summary>
+    /// <param name="inData">A list of byte values</param>
+    /// <param name="length">Default -1</param>
+    /// <param name="offset">Default 0</param>
     public BigInteger(System.Collections.Generic.IList<byte> inData, int length = -1, int offset = 0)
     {
         var inLen = length == -1 ? inData.Count - offset : length;
@@ -284,9 +286,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Constructor (Default value provided by an array of unsigned integers)
-    //*********************************************************************
+    /// <summary>
+    ///  Constructor (Default value provided by an array of unsigned integers)
+    /// </summary>
+    /// <param name="inData">Array of unsigned integer</param>
     public BigInteger(uint[] inData)
     {
         dataLength = inData.Length;
@@ -304,34 +307,52 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of the typecast operator.
-    // For BigInteger bi = 10;
-    //***********************************************************************
+    /// <summary>
+    /// Cast a type long value to type BigInteger value
+    /// </summary>
+    /// <param name="value">A long value</param>
     public static implicit operator BigInteger(long value)
     {
         return (new BigInteger(value));
     }
 
+
+    /// <summary>
+    /// Cast a type ulong value to type BigInteger value
+    /// </summary>
+    /// <param name="value">An unsigned long value</param>
     public static implicit operator BigInteger(ulong value)
     {
         return (new BigInteger(value));
     }
 
+
+    /// <summary>
+    /// Cast a type int value to type BigInteger value
+    /// </summary>
+    /// <param name="value">An int value</param>
     public static implicit operator BigInteger(int value)
     {
         return (new BigInteger((long)value));
     }
 
+
+    /// <summary>
+    /// Cast a type uint value to type BigInteger value
+    /// </summary>
+    /// <param name="value">An unsigned int value</param>
     public static implicit operator BigInteger(uint value)
     {
         return (new BigInteger((ulong)value));
     }
 
 
-    //***********************************************************************
-    // Overloading of addition operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of addition operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Result of the addition of 2 BigIntegers</returns>
     public static BigInteger operator +(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -368,9 +389,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of the unary ++ operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary ++ operator, which increments BigInteger by 1
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Incremented BigInteger</returns>
     public static BigInteger operator ++(BigInteger bi1)
     {
         BigInteger result = new BigInteger(bi1);
@@ -412,9 +435,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of subtraction operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of subtraction operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Result of the subtraction of 2 BigIntegers</returns>
     public static BigInteger operator -(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -460,9 +486,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of the unary -- operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary -- operator, decrements BigInteger by 1
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Decremented BigInteger</returns>
     public static BigInteger operator --(BigInteger bi1)
     {
         BigInteger result = new BigInteger(bi1);
@@ -506,9 +534,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of multiplication operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of multiplication operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Result of the multiplication of 2 BigIntegers</returns>
     public static BigInteger operator *(BigInteger bi1, BigInteger bi2)
     {
         int lastPos = maxLength - 1;
@@ -600,10 +631,12 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Overloading of unary << operators
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary &lt;&lt; operator (left shift)
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <param name="shiftVal">Left shift by shiftVal bit</param>
+    /// <returns>Left-shifted BigInteger</returns>
     public static BigInteger operator <<(BigInteger bi1, int shiftVal)
     {
         BigInteger result = new BigInteger(bi1);
@@ -611,7 +644,6 @@ public class BigInteger
 
         return result;
     }
-
 
     // least significant bits at lower part of buffer
     private static int shiftLeft(uint[] buffer, int shiftVal)
@@ -622,7 +654,7 @@ public class BigInteger
         while (bufLen > 1 && buffer[bufLen - 1] == 0)
             bufLen--;
 
-        for (int count = shiftVal; count > 0; )
+        for (int count = shiftVal; count > 0;)
         {
             if (count < shiftAmount)
                 shiftAmount = count;
@@ -651,9 +683,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of unary >> operators
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the unary &gt;&gt; operator (right shift)
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <param name="shiftVal">Right shift by shiftVal bit</param>
+    /// <returns>Right-shifted BigInteger</returns>
     public static BigInteger operator >>(BigInteger bi1, int shiftVal)
     {
         BigInteger result = new BigInteger(bi1);
@@ -690,7 +725,7 @@ public class BigInteger
         while (bufLen > 1 && buffer[bufLen - 1] == 0)
             bufLen--;
 
-        for (int count = shiftVal; count > 0; )
+        for (int count = shiftVal; count > 0;)
         {
             if (count < shiftAmount)
             {
@@ -718,9 +753,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of the NOT operator (1's complement)
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the bit-wise NOT operator (1's complement)
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Complemented BigInteger</returns>
     public static BigInteger operator ~(BigInteger bi1)
     {
         BigInteger result = new BigInteger(bi1);
@@ -737,9 +774,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of the NEGATE operator (2's complement)
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of the NEGATE operator (2's complement)
+    /// </summary>
+    /// <param name="bi1">A BigInteger</param>
+    /// <returns>Negated BigInteger or default BigInteger value if bi1 is 0</returns>
     public static BigInteger operator -(BigInteger bi1)
     {
         // handle neg of zero separately since it'll cause an overflow
@@ -780,21 +819,35 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of equality operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of equality operator, allows comparing 2 BigIntegers with == operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator ==(BigInteger bi1, BigInteger bi2)
     {
         return bi1.Equals(bi2);
     }
 
 
+    /// <summary>
+    /// Overloading of not equal operator, allows comparing 2 BigIntegers with != operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator !=(BigInteger bi1, BigInteger bi2)
     {
         return !(bi1.Equals(bi2));
     }
 
 
+    /// <summary>
+    /// Overriding of Equals method, allows comparing BigInteger with an arbitary object
+    /// </summary>
+    /// <param name="o">Input object, to be casted into BigInteger type for comparison</param>
+    /// <returns>Boolean result of the comparison</returns>
     public override bool Equals(object o)
     {
         BigInteger bi = (BigInteger)o;
@@ -817,9 +870,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of inequality operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of greater than operator, allows comparing 2 BigIntegers with &gt; operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator >(BigInteger bi1, BigInteger bi2)
     {
         int pos = maxLength - 1;
@@ -828,7 +884,7 @@ public class BigInteger
         if ((bi1.data[pos] & 0x80000000) != 0 && (bi2.data[pos] & 0x80000000) == 0)
             return false;
 
-            // bi1 is positive, bi2 is negative
+        // bi1 is positive, bi2 is negative
         else if ((bi1.data[pos] & 0x80000000) == 0 && (bi2.data[pos] & 0x80000000) != 0)
             return true;
 
@@ -846,6 +902,12 @@ public class BigInteger
     }
 
 
+    /// <summary>
+    /// Overloading of greater than operator, allows comparing 2 BigIntegers with &lt; operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator <(BigInteger bi1, BigInteger bi2)
     {
         int pos = maxLength - 1;
@@ -854,7 +916,7 @@ public class BigInteger
         if ((bi1.data[pos] & 0x80000000) != 0 && (bi2.data[pos] & 0x80000000) == 0)
             return true;
 
-            // bi1 is positive, bi2 is negative
+        // bi1 is positive, bi2 is negative
         else if ((bi1.data[pos] & 0x80000000) == 0 && (bi2.data[pos] & 0x80000000) != 0)
             return false;
 
@@ -872,12 +934,24 @@ public class BigInteger
     }
 
 
+    /// <summary>
+    /// Overloading of greater than or equal to operator, allows comparing 2 BigIntegers with &gt;= operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator >=(BigInteger bi1, BigInteger bi2)
     {
         return (bi1 == bi2 || bi1 > bi2);
     }
 
 
+    /// <summary>
+    /// Overloading of less than or equal to operator, allows comparing 2 BigIntegers with &lt;= operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>Boolean result of the comparison</returns>
     public static bool operator <=(BigInteger bi1, BigInteger bi2)
     {
         return (bi1 == bi2 || bi1 < bi2);
@@ -1047,9 +1121,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of division operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of division operator
+    /// </summary>
+    /// <param name="bi1">Dividend</param>
+    /// <param name="bi2">Divisor</param>
+    /// <returns>Quotient of the division</returns>
     public static BigInteger operator /(BigInteger bi1, BigInteger bi2)
     {
         BigInteger quotient = new BigInteger();
@@ -1089,9 +1166,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of modulus operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of modulus operator
+    /// </summary>
+    /// <param name="bi1">Dividend</param>
+    /// <param name="bi2">Divisor</param>
+    /// <returns>Remainder of the division</returns>
     public static BigInteger operator %(BigInteger bi1, BigInteger bi2)
     {
         BigInteger quotient = new BigInteger();
@@ -1128,9 +1208,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of bitwise AND operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of bitwise AND operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>BigInteger result after performing &amp; operation</returns>
     public static BigInteger operator &(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1152,9 +1235,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of bitwise OR operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of bitwise OR operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>BigInteger result after performing | operation</returns>
     public static BigInteger operator |(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1176,9 +1262,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Overloading of bitwise XOR operator
-    //***********************************************************************
+    /// <summary>
+    /// Overloading of bitwise XOR operator
+    /// </summary>
+    /// <param name="bi1">First BigInteger</param>
+    /// <param name="bi2">Second BigInteger</param>
+    /// <returns>BigInteger result after performing ^ operation</returns>
     public static BigInteger operator ^(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -1200,9 +1289,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns max(this, bi)
-    //***********************************************************************
+    /// <summary>
+    /// Compare this and a BigInteger and find the maximum one
+    /// </summary>
+    /// <param name="bi">BigInteger to be compared with this</param>
+    /// <returns>The bigger value of this and bi</returns>
     public BigInteger max(BigInteger bi)
     {
         if (this > bi)
@@ -1212,9 +1303,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns min(this, bi)
-    //***********************************************************************
+    /// <summary>
+    /// Compare this and a BigInteger and find the minimum one
+    /// </summary>
+    /// <param name="bi">BigInteger to be compared with this</param>
+    /// <returns>The smaller value of this and bi</returns>
     public BigInteger min(BigInteger bi)
     {
         if (this < bi)
@@ -1225,9 +1318,10 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the absolute value
-    //***********************************************************************
+    /// <summary>
+    /// Returns the absolute value
+    /// </summary>
+    /// <returns>Absolute value of this</returns>
     public BigInteger abs()
     {
         if ((this.data[maxLength - 1] & 0x80000000) != 0)
@@ -1237,25 +1331,22 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns a string representing the BigInteger in base 10.
-    //***********************************************************************
+    /// <summary>
+    /// Returns a string representing the BigInteger in base 10
+    /// </summary>
+    /// <returns>string representation of the BigInteger</returns>
     public override string ToString()
     {
         return ToString(10);
     }
 
 
-    //***********************************************************************
-    // Returns a string representing the BigInteger in sign-and-magnitude
-    // format in the specified radix.
-    //
-    // Example
-    // -------
-    // If the value of BigInteger is -255 in base 10, then
-    // ToString(16) returns "-FF"
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns a string representing the BigInteger in [sign][magnitude] format in the specified radix
+    /// </summary>
+    /// <example>If the value of BigInteger is -255 in base 10, then ToString(16) returns "-FF"</example>
+    /// <param name="radix">Base</param>
+    /// <returns>string representation of the BigInteger in [sign][magnitude] format</returns>
     public string ToString(int radix)
     {
         if (radix < 2 || radix > 36)
@@ -1304,19 +1395,14 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns a hex string showing the contains of the BigInteger
-    //
-    // Examples
-    // -------
-    // 1) If the value of BigInteger is 255 in base 10, then
-    //    ToHexString() returns "FF"
-    //
-    // 2) If the value of BigInteger is -255 in base 10, then
-    //    ToHexString() returns ".....FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF01",
-    //    which is the 2's complement representation of -255.
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns a hex string showing the contains of the BigInteger
+    /// </summary>
+    /// <example>
+    /// 1) If the value of BigInteger is 255 in base 10, then ToHexString() returns "FF"
+    /// 2) If the value of BigInteger is -255 in base 10, thenToHexString() returns ".....FFFFFFFFFF01", which is the 2's complement representation of -255.
+    /// </example>
+    /// <returns></returns>
     public string ToHexString()
     {
         string result = data[dataLength - 1].ToString("X");
@@ -1330,10 +1416,12 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Modulo Exponentiation
-    //***********************************************************************
+    /// <summary>
+    /// Modulo Exponentiation
+    /// </summary>
+    /// <param name="exp">Exponential</param>
+    /// <param name="n">Modulo</param>
+    /// <returns>BigInteger result of raising this to the power of exp and then modulo n </returns>
     public BigInteger modPow(BigInteger exp, BigInteger n)
     {
         if ((exp.data[maxLength - 1] & 0x80000000) != 0)
@@ -1399,14 +1487,18 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Fast calculation of modular reduction using Barrett's reduction.
-    // Requires x < b^(2k), where b is the base.  In this case, base is
-    // 2^32 (uint).
-    //
-    // Reference [4]
-    //***********************************************************************
+    /// <summary>
+    /// Fast calculation of modular reduction using Barrett's reduction
+    /// </summary>
+    /// <remarks>
+    /// Requires x &lt; b^(2k), where b is the base.  In this case, base is 2^32 (uint).
+    ///
+    /// Reference [4]
+    /// </remarks>
+    /// <param name="x"></param>
+    /// <param name="n"></param>
+    /// <param name="constant"></param>
+    /// <returns></returns>
     private BigInteger BarrettReduction(BigInteger x, BigInteger n, BigInteger constant)
     {
         int k = n.dataLength,
@@ -1486,9 +1578,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns gcd(this, bi)
-    //***********************************************************************
+    /// <summary>
+    /// Returns gcd(this, bi)
+    /// </summary>
+    /// <param name="bi"></param>
+    /// <returns>Greatest Common Divisor of this and bi</returns>
     public BigInteger gcd(BigInteger bi)
     {
         BigInteger x;
@@ -1517,9 +1611,11 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Populates "this" with the specified amount of random bits
-    //***********************************************************************
+    /// <summary>
+    /// Populates "this" with the specified amount of random bits
+    /// </summary>
+    /// <param name="bits"></param>
+    /// <param name="rand"></param>
     public void genRandomBits(int bits, Random rand)
     {
         int dwords = bits >> 5;
@@ -1555,15 +1651,17 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the position of the most significant bit in the BigInteger.
-    //
-    // Eg.  The result is 1, if the value of BigInteger is 0...0000 0000
-    //      The result is 1, if the value of BigInteger is 0...0000 0001
-    //      The result is 2, if the value of BigInteger is 0...0000 0010
-    //      The result is 2, if the value of BigInteger is 0...0000 0011
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns the position of the most significant bit in the BigInteger
+    /// </summary>
+    /// <example>
+    /// 1) The result is 1, if the value of BigInteger is 0...0000 0000
+    /// 2) The result is 1, if the value of BigInteger is 0...0000 0001
+    /// 3) The result is 2, if the value of BigInteger is 0...0000 0010
+    /// 4) The result is 2, if the value of BigInteger is 0...0000 0011
+    /// 5) The result is 5, if the value of BigInteger is 0...0001 0011
+    /// </example>
+    /// <returns></returns>
     public int bitCount()
     {
         while (dataLength > 1 && data[dataLength - 1] == 0)
@@ -1584,26 +1682,19 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Probabilistic prime test based on Fermat's little theorem
-    //
-    // for any a < p (p does not divide a) if
-    //      a^(p-1) mod p != 1 then p is not prime.
-    //
-    // Otherwise, p is probably prime (pseudoprime to the chosen base).
-    //
-    // Returns
-    // -------
-    // True if "this" is a pseudoprime to randomly chosen
-    // bases.  The number of chosen bases is given by the "confidence"
-    // parameter.
-    //
-    // False if "this" is definitely NOT prime.
-    //
-    // Note - this method is fast but fails for Carmichael numbers except
-    // when the randomly chosen base is a factor of the number.
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Probabilistic prime test based on Fermat's little theorem
+    /// </summary>
+    /// <remarks>
+    /// for any a &lt; p (p does not divide a) if
+    ///      a^(p-1) mod p != 1 then p is not prime.
+    ///
+    /// Otherwise, p is probably prime (pseudoprime to the chosen base).
+    /// 
+    /// This method is fast but fails for Carmichael numbers when the randomly chosen base is a factor of the number.
+    /// </remarks>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is a pseudoprime to randomly chosen bases</returns>
     public bool FermatLittleTest(int confidence)
     {
         BigInteger thisVal;
@@ -1670,26 +1761,20 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Probabilistic prime test based on Rabin-Miller's
-    //
-    // for any p > 0 with p - 1 = 2^s * t
-    //
-    // p is probably prime (strong pseudoprime) if for any a < p,
-    // 1) a^t mod p = 1 or
-    // 2) a^((2^j)*t) mod p = p-1 for some 0 <= j <= s-1
-    //
-    // Otherwise, p is composite.
-    //
-    // Returns
-    // -------
-    // True if "this" is a strong pseudoprime to randomly chosen
-    // bases.  The number of chosen bases is given by the "confidence"
-    // parameter.
-    //
-    // False if "this" is definitely NOT prime.
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Probabilistic prime test based on Rabin-Miller's
+    /// </summary>
+    /// <remarks>
+    /// for any p &gt; 0 with p - 1 = 2^s * t
+    ///
+    /// p is probably prime (strong pseudoprime) if for any a &lt; p,
+    /// 1) a^t mod p = 1 or
+    /// 2) a^((2^j)*t) mod p = p-1 for some 0 &lt;= j &lt;= s-1
+    ///
+    /// Otherwise, p is composite.
+    /// </remarks>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is a strong pseudoprime to randomly chosen bases</returns>
     public bool RabinMillerTest(int confidence)
     {
         BigInteger thisVal;
@@ -1788,25 +1873,19 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Probabilistic prime test based on Solovay-Strassen (Euler Criterion)
-    //
-    // p is probably prime if for any a < p (a is not multiple of p),
-    // a^((p-1)/2) mod p = J(a, p)
-    //
-    // where J is the Jacobi symbol.
-    //
-    // Otherwise, p is composite.
-    //
-    // Returns
-    // -------
-    // True if "this" is a Euler pseudoprime to randomly chosen
-    // bases.  The number of chosen bases is given by the "confidence"
-    // parameter.
-    //
-    // False if "this" is definitely NOT prime.
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Probabilistic prime test based on Solovay-Strassen (Euler Criterion)
+    /// </summary>
+    /// <remarks>
+    ///  p is probably prime if for any a &lt; p (a is not multiple of p),
+    /// a^((p-1)/2) mod p = J(a, p)
+    ///
+    /// where J is the Jacobi symbol.
+    ///
+    /// Otherwise, p is composite.
+    /// </remarks>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is a Euler pseudoprime to randomly chosen bases</returns>
     public bool SolovayStrassenTest(int confidence)
     {
         BigInteger thisVal;
@@ -1879,19 +1958,18 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Implementation of the Lucas Strong Pseudo Prime test.
-    //
-    // Let n be an odd number with gcd(n,D) = 1, and n - J(D, n) = 2^s * d
-    // with d odd and s >= 0.
-    //
-    // If Ud mod n = 0 or V2^r*d mod n = 0 for some 0 <= r < s, then n
-    // is a strong Lucas pseudoprime with parameters (P, Q).  We select
-    // P and Q based on Selfridge.
-    //
-    // Returns True if number is a strong Lucus pseudo prime.
-    // Otherwise, returns False indicating that number is composite.
-    //***********************************************************************
+    /// <summary>
+    /// Implementation of the Lucas Strong Pseudo Prime test
+    /// </summary>
+    /// <remarks>
+    /// Let n be an odd number with gcd(n,D) = 1, and n - J(D, n) = 2^s * d
+    /// with d odd and s >= 0.
+    ///
+    /// If Ud mod n = 0 or V2^r*d mod n = 0 for some 0 &lt;= r &lt; s, then n
+    /// is a strong Lucas pseudoprime with parameters (P, Q).  We select
+    /// P and Q based on Selfridge.
+    /// </remarks>
+    /// <returns>True if number is a strong Lucus pseudo prime</returns>
     public bool LucasStrongTest()
     {
         BigInteger thisVal;
@@ -2034,13 +2112,14 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Determines whether a number is probably prime, using the Rabin-Miller's
-    // test.  Before applying the test, the number is tested for divisibility
-    // by primes < 2000
-    //
-    // Returns true if number is probably prime.
-    //***********************************************************************
+    /// <summary>
+    /// Determines whether a number is probably prime using the Rabin-Miller's test
+    /// </summary>
+    /// <remarks>
+    /// Before applying the test, the number is tested for divisibility by primes &lt; 2000
+    /// </remarks>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <returns>True if this is probably prime</returns>
     public bool isProbablePrime(int confidence)
     {
         BigInteger thisVal;
@@ -2069,27 +2148,23 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Determines whether this BigInteger is probably prime using a
-    // combination of base 2 strong pseudoprime test and Lucas strong
-    // pseudoprime test.
-    //
-    // The sequence of the primality test is as follows,
-    //
-    // 1) Trial divisions are carried out using prime numbers below 2000.
-    //    if any of the primes divides this BigInteger, then it is not prime.
-    //
-    // 2) Perform base 2 strong pseudoprime test.  If this BigInteger is a
-    //    base 2 strong pseudoprime, proceed on to the next step.
-    //
-    // 3) Perform strong Lucas pseudoprime test.
-    //
-    // Returns True if this BigInteger is both a base 2 strong pseudoprime
-    // and a strong Lucas pseudoprime.
-    //
-    // For a detailed discussion of this primality test, see [6].
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Determines whether this BigInteger is probably prime using a combination of base 2 strong pseudoprime test and Lucas strong pseudoprime test 
+    /// </summary>
+    /// <remarks>
+    /// The sequence of the primality test is as follows,
+    ///
+    /// 1) Trial divisions are carried out using prime numbers below 2000.
+    ///    if any of the primes divides this BigInteger, then it is not prime.
+    ///
+    /// 2) Perform base 2 strong pseudoprime test.  If this BigInteger is a
+    ///    base 2 strong pseudoprime, proceed on to the next step.
+    ///
+    /// 3) Perform strong Lucas pseudoprime test.
+    /// 
+    /// For a detailed discussion of this primality test, see [6].
+    /// </remarks>
+    /// <returns>True if this is probably prime</returns>
     public bool isProbablePrime()
     {
         BigInteger thisVal;
@@ -2177,19 +2252,20 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Returns the lowest 4 bytes of the BigInteger as an int.
-    //***********************************************************************
+    /// <summary>
+    /// Returns the lowest 4 bytes of the BigInteger as an int
+    /// </summary>
+    /// <returns>Lowest 4 bytes as integer</returns>
     public int IntValue()
     {
         return (int)data[0];
     }
 
 
-    //***********************************************************************
-    // Returns the lowest 8 bytes of the BigInteger as a long.
-    //***********************************************************************
+    /// <summary>
+    /// Returns the lowest 8 bytes of the BigInteger as a long
+    /// </summary>
+    /// <returns>Lowest 8 bytes as long</returns>
     public long LongValue()
     {
         long val = 0;
@@ -2209,10 +2285,15 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Computes the Jacobi Symbol for a and b.
-    // Algorithm adapted from [3] and [4] with some optimizations
-    //***********************************************************************
+    /// <summary>
+    /// Computes the Jacobi Symbol for 2 BigInteger a and b
+    /// </summary>
+    /// <remarks>
+    /// Algorithm adapted from [3] and [4] with some optimizations
+    /// </remarks>
+    /// <param name="a">Any BigInteger</param>
+    /// <param name="b">Odd BigInteger</param>
+    /// <returns>Jacobi Symbol</returns>
     public static int Jacobi(BigInteger a, BigInteger b)
     {
         // Jacobi defined only for odd integers
@@ -2264,10 +2345,13 @@ public class BigInteger
     }
 
 
-
-    //***********************************************************************
-    // Generates a positive BigInteger that is probably prime.
-    //***********************************************************************
+    /// <summary>
+    /// Generates a positive BigInteger that is probably prime
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <param name="rand">Random object</param>
+    /// <returns>A probably prime number</returns>
     public static BigInteger genPseudoPrime(int bits, int confidence, Random rand)
     {
         BigInteger result = new BigInteger();
@@ -2285,10 +2369,12 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Generates a random number with the specified number of bits such
-    // that gcd(number, this) = 1
-    //***********************************************************************
+    /// <summary>
+    /// Generates a random number with the specified number of bits such that gcd(number, this) = 1
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="rand">Random object</param>
+    /// <returns>Relatively prime number of this</returns>
     public BigInteger genCoPrime(int bits, Random rand)
     {
         bool done = false;
@@ -2308,10 +2394,14 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the modulo inverse of this.  Throws ArithmeticException if
-    // the inverse does not exist.  (i.e. gcd(this, modulus) != 1)
-    //***********************************************************************
+    /// <summary>
+    /// Returns the modulo inverse of this
+    /// </summary>
+    /// <remarks>
+    /// Throws ArithmeticException if the inverse does not exist.  (i.e. gcd(this, modulus) != 1)
+    /// </remarks>
+    /// <param name="modulus"></param>
+    /// <returns>Modulo inverse of this</returns>
     public BigInteger modInverse(BigInteger modulus)
     {
         BigInteger[] p = { 0, 1 };
@@ -2361,10 +2451,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the value of the BigInteger as a byte array.  The lowest
-    // index contains the MSB.
-    //***********************************************************************
+    /// <summary>
+    /// Returns the value of the BigInteger as a byte array
+    /// </summary>
+    /// <remarks>
+    /// The lowest index contains the MSB
+    /// </remarks>
+    /// <returns>Byte array containing value of the BigInteger</returns>
     public byte[] getBytes()
     {
         int numBits = bitCount();
@@ -2414,10 +2507,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Sets the value of the specified bit to 1
-    // The Least Significant Bit position is 0.
-    //***********************************************************************
+    /// <summary>
+    /// Sets the value of the specified bit to 1
+    /// </summary>
+    /// <remarks>
+    /// The Least Significant Bit position is 0
+    /// </remarks>
+    /// <param name="bitNum">The position of bit to be changed</param>
     public void setBit(uint bitNum)
     {
         uint bytePos = bitNum >> 5;             // divide by 32
@@ -2431,10 +2527,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Sets the value of the specified bit to 0
-    // The Least Significant Bit position is 0.
-    //***********************************************************************
+    /// <summary>
+    /// Sets the value of the specified bit to 0
+    /// </summary>
+    /// <remarks>
+    /// The Least Significant Bit position is 0
+    /// </remarks>
+    /// <param name="bitNum">The position of bit to be changed</param>
     public void unsetBit(uint bitNum)
     {
         uint bytePos = bitNum >> 5;
@@ -2454,14 +2553,13 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns a value that is equivalent to the integer square root
-    // of the BigInteger.
-    //
-    // The integer square root of "this" is defined as the largest integer n
-    // such that (n * n) <= this
-    //
-    //***********************************************************************
+    /// <summary>
+    /// Returns a value that is equivalent to the integer square root of this
+    /// </summary>
+    /// <remarks>
+    /// The integer square root of "this" is defined as the largest integer n, such that (n * n) &lt;= this
+    /// </remarks>
+    /// <returns>Integer square root of this</returns>
     public BigInteger sqrt()
     {
         uint numBits = (uint)this.bitCount();
@@ -2505,37 +2603,43 @@ public class BigInteger
     }
 
 
-    //***********************************************************************
-    // Returns the k_th number in the Lucas Sequence reduced modulo n.
-    //
-    // Uses index doubling to speed up the process.  For example, to calculate V(k),
-    // we maintain two numbers in the sequence V(n) and V(n+1).
-    //
-    // To obtain V(2n), we use the identity
-    //      V(2n) = (V(n) * V(n)) - (2 * Q^n)
-    // To obtain V(2n+1), we first write it as
-    //      V(2n+1) = V((n+1) + n)
-    // and use the identity
-    //      V(m+n) = V(m) * V(n) - Q * V(m-n)
-    // Hence,
-    //      V((n+1) + n) = V(n+1) * V(n) - Q^n * V((n+1) - n)
-    //                   = V(n+1) * V(n) - Q^n * V(1)
-    //                   = V(n+1) * V(n) - Q^n * P
-    //
-    // We use k in its binary expansion and perform index doubling for each
-    // bit position.  For each bit position that is set, we perform an
-    // index doubling followed by an index addition.  This means that for V(n),
-    // we need to update it to V(2n+1).  For V(n+1), we need to update it to
-    // V((2n+1)+1) = V(2*(n+1))
-    //
-    // This function returns
-    // [0] = U(k)
-    // [1] = V(k)
-    // [2] = Q^n
-    //
-    // Where U(0) = 0 % n, U(1) = 1 % n
-    //       V(0) = 2 % n, V(1) = P % n
-    //***********************************************************************
+    /// <summary>
+    /// Returns the k_th number in the Lucas Sequence reduced modulo n
+    /// </summary>
+    /// <remarks>
+    /// Uses index doubling to speed up the process.  For example, to calculate V(k),
+    /// we maintain two numbers in the sequence V(n) and V(n+1).
+    ///
+    /// To obtain V(2n), we use the identity
+    ///      V(2n) = (V(n) * V(n)) - (2 * Q^n)
+    /// To obtain V(2n+1), we first write it as
+    ///      V(2n+1) = V((n+1) + n)
+    /// and use the identity
+    ///      V(m+n) = V(m) * V(n) - Q * V(m-n)
+    /// Hence,
+    ///      V((n+1) + n) = V(n+1) * V(n) - Q^n * V((n+1) - n)
+    ///                   = V(n+1) * V(n) - Q^n * V(1)
+    ///                   = V(n+1) * V(n) - Q^n * P
+    ///
+    /// We use k in its binary expansion and perform index doubling for each
+    /// bit position.  For each bit position that is set, we perform an
+    /// index doubling followed by an index addition.  This means that for V(n),
+    /// we need to update it to V(2n+1).  For V(n+1), we need to update it to
+    /// V((2n+1)+1) = V(2*(n+1))
+    ///
+    /// This function returns
+    /// [0] = U(k)
+    /// [1] = V(k)
+    /// [2] = Q^n
+    ///
+    /// Where U(0) = 0 % n, U(1) = 1 % n
+    ///       V(0) = 2 % n, V(1) = P % n
+    /// </remarks>
+    /// <param name="P"></param>
+    /// <param name="Q"></param>
+    /// <param name="k"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
     public static BigInteger[] LucasSequence(BigInteger P, BigInteger Q,
                                              BigInteger k, BigInteger n)
     {
