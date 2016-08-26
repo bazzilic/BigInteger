@@ -6,7 +6,7 @@ using System;
 /// This is a BigInteger class. Holds integer that is more than 64-bit (long).
 /// </summary>
 /// <remarks>
-/// This class contains overloaded arithmetic operators(+, -, *, /, %), bitwise operators(&, |) and other
+/// This class contains overloaded arithmetic operators(+, -, *, /, %), bitwise operators(&amp;, |) and other
 /// operations that can be done with normal integer. It also contains implementation of various prime test.
 /// This class also contains methods dealing with cryptography such as generating prime number, generating 
 /// a coprime number.
