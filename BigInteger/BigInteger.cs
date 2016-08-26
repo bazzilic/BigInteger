@@ -285,7 +285,7 @@ public class BigInteger
             dataLength--;
     }
 
-    
+
     /// <summary>
     ///  Constructor (Default value provided by an array of unsigned integers)
     /// </summary>
@@ -348,11 +348,11 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of addition operator, support addition of BigInteger type
+    /// Overloading of addition operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
-    /// <returns>Result of the addition of 2 BigInteger</returns>
+    /// <returns>Result of the addition of 2 BigIntegers</returns>
     public static BigInteger operator +(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -390,7 +390,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of the unary ++ operator, support BigInteger to be incremented by 1
+    /// Overloading of the unary ++ operator, which increments BigInteger by 1
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <returns>Incremented BigInteger</returns>
@@ -436,11 +436,11 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of subtraction operator, support subtraction of BigInteger type
+    /// Overloading of subtraction operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
-    /// <returns>Result of the subtraction of 2 BigIntegerr</returns>
+    /// <returns>Result of the subtraction of 2 BigIntegers</returns>
     public static BigInteger operator -(BigInteger bi1, BigInteger bi2)
     {
         BigInteger result = new BigInteger();
@@ -487,7 +487,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of the unary -- operator, support BigInteger to be decremented by 1
+    /// Overloading of the unary -- operator, decrements BigInteger by 1
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <returns>Decremented BigInteger</returns>
@@ -535,11 +535,11 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of multiplication operator, support multiplication of BigInteger type
+    /// Overloading of multiplication operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
-    /// <returns>Result of the multiplication of 2 BigIntegerr</returns>
+    /// <returns>Result of the multiplication of 2 BigIntegers</returns>
     public static BigInteger operator *(BigInteger bi1, BigInteger bi2)
     {
         int lastPos = maxLength - 1;
@@ -632,7 +632,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of the unary &lt;&lt; operator, support BigInteger to have left-shifted
+    /// Overloading of the unary &lt;&lt; operator (left shift)
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <param name="shiftVal">Left shift by shiftVal bit</param>
@@ -654,7 +654,7 @@ public class BigInteger
         while (bufLen > 1 && buffer[bufLen - 1] == 0)
             bufLen--;
 
-        for (int count = shiftVal; count > 0; )
+        for (int count = shiftVal; count > 0;)
         {
             if (count < shiftAmount)
                 shiftAmount = count;
@@ -684,7 +684,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of the unary &gt;&gt; operator, support BigInteger to have right-shifted
+    /// Overloading of the unary &gt;&gt; operator (right shift)
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <param name="shiftVal">Right shift by shiftVal bit</param>
@@ -725,7 +725,7 @@ public class BigInteger
         while (bufLen > 1 && buffer[bufLen - 1] == 0)
             bufLen--;
 
-        for (int count = shiftVal; count > 0; )
+        for (int count = shiftVal; count > 0;)
         {
             if (count < shiftAmount)
             {
@@ -752,9 +752,9 @@ public class BigInteger
         return bufLen;
     }
 
-    
+
     /// <summary>
-    /// Overloading of the NOT operator (1's complement), support complementing of BigInteger type bit by bit
+    /// Overloading of the bit-wise NOT operator (1's complement)
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <returns>Complemented BigInteger</returns>
@@ -775,7 +775,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of the NEGATE operator (2's complement), support negating of BigInteger type
+    /// Overloading of the NEGATE operator (2's complement)
     /// </summary>
     /// <param name="bi1">A BigInteger</param>
     /// <returns>Negated BigInteger or default BigInteger value if bi1 is 0</returns>
@@ -818,9 +818,9 @@ public class BigInteger
         return result;
     }
 
-    
+
     /// <summary>
-    /// Overloading of equality operator, allow comparing 2 BigInteger type with == operator
+    /// Overloading of equality operator, allows comparing 2 BigIntegers with == operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -832,7 +832,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of not equal operator, allow comparing 2 BigInteger type with != operator
+    /// Overloading of not equal operator, allows comparing 2 BigIntegers with != operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -844,7 +844,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overriding of Equals method, allow comparing BigInteger with an arbitary object
+    /// Overriding of Equals method, allows comparing BigInteger with an arbitary object
     /// </summary>
     /// <param name="o">Input object, to be casted into BigInteger type for comparison</param>
     /// <returns>Boolean result of the comparison</returns>
@@ -871,7 +871,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &gt; operator
+    /// Overloading of greater than operator, allows comparing 2 BigIntegers with &gt; operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -884,7 +884,7 @@ public class BigInteger
         if ((bi1.data[pos] & 0x80000000) != 0 && (bi2.data[pos] & 0x80000000) == 0)
             return false;
 
-            // bi1 is positive, bi2 is negative
+        // bi1 is positive, bi2 is negative
         else if ((bi1.data[pos] & 0x80000000) == 0 && (bi2.data[pos] & 0x80000000) != 0)
             return true;
 
@@ -903,7 +903,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of greater than operator, allow comparing 2 BigInteger type with &lt; operator
+    /// Overloading of greater than operator, allows comparing 2 BigIntegers with &lt; operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -916,7 +916,7 @@ public class BigInteger
         if ((bi1.data[pos] & 0x80000000) != 0 && (bi2.data[pos] & 0x80000000) == 0)
             return true;
 
-            // bi1 is positive, bi2 is negative
+        // bi1 is positive, bi2 is negative
         else if ((bi1.data[pos] & 0x80000000) == 0 && (bi2.data[pos] & 0x80000000) != 0)
             return false;
 
@@ -935,7 +935,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of greater than or equal to operator, allow comparing 2 BigInteger type with &gt;= operator
+    /// Overloading of greater than or equal to operator, allows comparing 2 BigIntegers with &gt;= operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -947,7 +947,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of less than or equal to operator, allow comparing 2 BigInteger type with &lt;= operator
+    /// Overloading of less than or equal to operator, allows comparing 2 BigIntegers with &lt;= operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -1120,9 +1120,9 @@ public class BigInteger
             outRemainder.dataLength--;
     }
 
-   
+
     /// <summary>
-    /// Overloading of division operator, support division of 2 BigInteger type
+    /// Overloading of division operator
     /// </summary>
     /// <param name="bi1">Dividend</param>
     /// <param name="bi2">Divisor</param>
@@ -1167,7 +1167,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of modulus operator, support modulo operation of BigInteger type
+    /// Overloading of modulus operator
     /// </summary>
     /// <param name="bi1">Dividend</param>
     /// <param name="bi2">Divisor</param>
@@ -1209,7 +1209,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of bitwise AND operator, support bitwise and operation on BigInteger type
+    /// Overloading of bitwise AND operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -1236,7 +1236,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of bitwise OR operator, support bitwise or operation on BigInteger type
+    /// Overloading of bitwise OR operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -1263,7 +1263,7 @@ public class BigInteger
 
 
     /// <summary>
-    /// Overloading of bitwise XOR operator, support bitwise xor operation on BigInteger type
+    /// Overloading of bitwise XOR operator
     /// </summary>
     /// <param name="bi1">First BigInteger</param>
     /// <param name="bi2">Second BigInteger</param>
@@ -2344,7 +2344,7 @@ public class BigInteger
             return (s * Jacobi(b % a1, a1));
     }
 
-    
+
     /// <summary>
     /// Generates a positive BigInteger that is probably prime
     /// </summary>
