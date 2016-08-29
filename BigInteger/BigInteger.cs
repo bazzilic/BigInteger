@@ -29,8 +29,8 @@ public class BigInteger
 
 
     private uint[] data = new uint[MAX_LENGTH];             // stores bytes from the Big Integer
-    public int dataLength { get; set; }                 // number of actual chars used
-    // public int dataLength { get; set; } = 1; // C# 6.0
+    public int dataLength { get; private set; } = 1;                 // number of actual chars used
+
 
     //***********************************************************************
     // Constructor (Default value for BigInteger is 0
@@ -43,10 +43,6 @@ public class BigInteger
     //***********************************************************************
     public BigInteger(long value)
     {
-        // Can remove this line if using C# 6.0
-        // Just uncomment the initialized property
-        this.dataLength = 1;
-
         if (value == 0) return;
 
         bool isPositive = value >= 0;
@@ -55,13 +51,13 @@ public class BigInteger
         // the length of the long datatype
         for (this.dataLength = 0; this.dataLength < MAX_LENGTH && value != 0; this.dataLength++)
         {
-            data[this.dataLength] = (uint)(value & ALL_ONES);
+            this.data[this.dataLength] = (uint)(value & ALL_ONES);
             value >>= 32;
         }
 
-        if (isPositive && (value != 0 || (data[MAX_LENGTH - 1] & ONE_ALL_ZEROS) != 0))         // overflow check for +ve value
+        if (isPositive && (value != 0 || (this.data[MAX_LENGTH - 1] & ONE_ALL_ZEROS) != 0))         // overflow check for +ve value
             throw (new ArithmeticException("Positive overflow in constructor."));
-        else if (!isPositive && (value != -1 || (data[this.dataLength - 1] & ONE_ALL_ZEROS) == 0))    // underflow check for -ve value
+        else if (!isPositive && (value != -1 || (this.data[this.dataLength - 1] & ONE_ALL_ZEROS) == 0))    // underflow check for -ve value
             throw (new ArithmeticException("Negative underflow in constructor."));
 
     }
@@ -70,7 +66,23 @@ public class BigInteger
     //***********************************************************************
     // Constructor (Default value provided by ulong)
     //***********************************************************************
-    public BigInteger(ulong value) : this((long)value) { }
+    public BigInteger(ulong value)
+    {
+        if (value == 0) return;
+
+        // copy bytes from ulong to BigInteger without any assumption of
+
+        // the length of the ulong datatype
+
+        for (this.dataLength = 0; this.dataLength < MAX_LENGTH && value != 0; this.dataLength++)
+        {
+            this.data[this.dataLength] = (uint)(value & ALL_ONES);
+            value >>= 32;
+        }
+
+        if (value != 0 || (this.data[MAX_LENGTH - 1] & 0x80000000) != 0)
+            throw (new ArithmeticException("Positive overflow in constructor."));
+    }
 
 
 
