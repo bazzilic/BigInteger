@@ -1651,6 +1651,7 @@ public class BigInteger
             dataLength = 1;
     }
 
+
     /// <summary>
     /// Populates "this" with the specified amount of random bits (secured version)
     /// </summary>
@@ -2401,12 +2402,61 @@ public class BigInteger
 
 
     /// <summary>
+    /// Generates a positive BigInteger that is probably prime (secured version)
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <param name="rand">RNGCryptoServiceProvider object</param>
+    /// <returns>A probably prime number</returns>
+    public static BigInteger genPseudoPrime(int bits, int confidence, RNGCryptoServiceProvider rand)
+    {
+        BigInteger result = new BigInteger();
+        bool done = false;
+
+        while (!done)
+        {
+            result.genRandomBits(bits, rand);
+            result.data[0] |= 0x01;		// make it odd
+
+            // prime test
+            done = result.isProbablePrime(confidence);
+        }
+        return result;
+    }
+
+
+    /// <summary>
     /// Generates a random number with the specified number of bits such that gcd(number, this) = 1
     /// </summary>
     /// <param name="bits">Number of bit</param>
     /// <param name="rand">Random object</param>
     /// <returns>Relatively prime number of this</returns>
     public BigInteger genCoPrime(int bits, Random rand)
+    {
+        bool done = false;
+        BigInteger result = new BigInteger();
+
+        while (!done)
+        {
+            result.genRandomBits(bits, rand);
+
+            // gcd test
+            BigInteger g = result.gcd(this);
+            if (g.dataLength == 1 && g.data[0] == 1)
+                done = true;
+        }
+
+        return result;
+    }
+
+
+    /// <summary>
+    /// Generates a random number with the specified number of bits such that gcd(number, this) = 1 (secured)
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="rand">Random object</param>
+    /// <returns>Relatively prime number of this</returns>
+    public BigInteger genCoPrime(int bits, RNGCryptoServiceProvider rand)
     {
         bool done = false;
         BigInteger result = new BigInteger();
