@@ -1656,7 +1656,7 @@ public class BigInteger
     /// Populates "this" with the specified amount of random bits (secured version)
     /// </summary>
     /// <param name="bits"></param>
-    /// <param name="rand"></param>
+    /// <param name="rng"></param>
     public void genRandomBits(int bits, RNGCryptoServiceProvider rng)
     {
         int dwords = bits >> 5;
@@ -1675,6 +1675,17 @@ public class BigInteger
             rng.GetBytes(randomBytes);
             data[i] = BitConverter.ToUInt32(randomBytes, 0);
         }
+
+        if (remBits != 0)
+        {
+            uint mask = (uint)(0x01 << (remBits - 1));
+            data[dwords - 1] |= mask;
+
+            mask = (uint)(0xFFFFFFFF >> (32 - remBits));
+            data[dwords - 1] &= mask;
+        }
+        else
+            data[dwords - 1] |= 0x80000000;
 
         dataLength = dwords;
 
