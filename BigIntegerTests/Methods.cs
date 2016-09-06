@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace BigIntegerTests
 {
@@ -77,6 +78,84 @@ namespace BigIntegerTests
 
                 Assert.AreNotEqual(zero_bytes.Length, 0);
                 Assert.AreEqual(zero_bytes[0], (byte)0);
+            }
+        }
+
+        [TestMethod]
+        public void TestSecuredGenRandomBits()
+        {
+            { // Test < 32 bits
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+                var rand = new Random();
+
+                bi.genRandomBits(rand.Next(33), rng);
+
+                var bytes = bi.getBytes();
+                Array.Reverse(bytes);
+                var new_bytes = new byte[4];
+                Array.Copy(bytes, new_bytes, bytes.Length);
+
+                Assert.IsTrue(BitConverter.ToUInt32(new_bytes, 0) < (Math.Pow(2, 32) - 1));
+            }
+
+            { // Test upper boundary values
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+
+                Exception exception = null;
+
+                try
+                {
+                    bi.genRandomBits(2241, rng);
+                }
+                catch(Exception ex)
+                {
+                    exception = ex;
+                }
+
+                Assert.IsNotNull(exception);
+
+                bi.genRandomBits(2240, rng);
+                Assert.AreEqual(70, bi.dataLength);
+
+                bi.genRandomBits(2239, rng);
+                Assert.AreEqual(70, bi.dataLength);
+            }
+
+            { // Test lower boudary value
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+
+                bi.genRandomBits(1, rng);
+                Assert.IsTrue(bi.getBytes()[0] == 1 || bi.getBytes()[0] == 0);
+            }
+        }
+
+        [TestMethod]
+        public void TestGenCoPrime()
+        {
+            { // Test small values
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+
+                bi.genRandomBits(100, rng);
+
+                var coprime = bi.genCoPrime(10, rng);
+
+                Assert.IsTrue((bi.gcd(coprime)).getBytes()[0] == 1);
+            }
+
+            { // Test arbitrary values 
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+                var rand = new Random();
+
+                bi.genRandomBits(rand.Next(2241), rng);
+
+                var coprime = bi.genCoPrime(rand.Next(2241), rng);
+
+                Assert.IsTrue((bi.gcd(coprime)).getBytes()[0] == 1);
             }
         }
     }
