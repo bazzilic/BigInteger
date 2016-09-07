@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace BigIntegerTests
@@ -9,7 +8,6 @@ namespace BigIntegerTests
     [TestClass]
     public class Methods
     {
-
         [TestMethod]
         public void TestBitCount()
         {
@@ -170,7 +168,7 @@ namespace BigIntegerTests
                 {
                     bi.genRandomBits(2241, rng);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     exception = ex;
                 }
