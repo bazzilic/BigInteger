@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 
 // compile with: /doc:BigIntegerDocComment.xml
 
@@ -1652,6 +1653,48 @@ public class BigInteger
 
 
     /// <summary>
+    /// Populates "this" with the specified amount of random bits (secured version)
+    /// </summary>
+    /// <param name="bits"></param>
+    /// <param name="rng"></param>
+    public void genRandomBits(int bits, RNGCryptoServiceProvider rng)
+    {
+        int dwords = bits >> 5;
+        int remBits = bits & 0x1F;
+
+        if (remBits != 0)
+            dwords++;
+
+        if (dwords > maxLength)
+            throw (new ArithmeticException("Number of required bits > maxLength."));
+
+        byte[] randomBytes = new byte[4];
+
+        for (int i = 0; i < dwords; i++)
+        {
+            rng.GetBytes(randomBytes);
+            data[i] = BitConverter.ToUInt32(randomBytes, 0);
+        }
+
+        if (remBits != 0)
+        {
+            uint mask = (uint)(0x01 << (remBits - 1));
+            data[dwords - 1] |= mask;
+
+            mask = (uint)(0xFFFFFFFF >> (32 - remBits));
+            data[dwords - 1] &= mask;
+        }
+        else
+            data[dwords - 1] |= 0x80000000;
+
+        dataLength = dwords;
+
+        if (dataLength == 0)
+            dataLength = 1;
+    }
+
+
+    /// <summary>
     /// Returns the position of the most significant bit in the BigInteger
     /// </summary>
     /// <example>
@@ -2370,12 +2413,61 @@ public class BigInteger
 
 
     /// <summary>
+    /// Generates a positive BigInteger that is probably prime (secured version)
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="confidence">Number of chosen bases</param>
+    /// <param name="rand">RNGCryptoServiceProvider object</param>
+    /// <returns>A probably prime number</returns>
+    public static BigInteger genPseudoPrime(int bits, int confidence, RNGCryptoServiceProvider rand)
+    {
+        BigInteger result = new BigInteger();
+        bool done = false;
+
+        while (!done)
+        {
+            result.genRandomBits(bits, rand);
+            result.data[0] |= 0x01;		// make it odd
+
+            // prime test
+            done = result.isProbablePrime(confidence);
+        }
+        return result;
+    }
+
+
+    /// <summary>
     /// Generates a random number with the specified number of bits such that gcd(number, this) = 1
     /// </summary>
     /// <param name="bits">Number of bit</param>
     /// <param name="rand">Random object</param>
     /// <returns>Relatively prime number of this</returns>
     public BigInteger genCoPrime(int bits, Random rand)
+    {
+        bool done = false;
+        BigInteger result = new BigInteger();
+
+        while (!done)
+        {
+            result.genRandomBits(bits, rand);
+
+            // gcd test
+            BigInteger g = result.gcd(this);
+            if (g.dataLength == 1 && g.data[0] == 1)
+                done = true;
+        }
+
+        return result;
+    }
+
+
+    /// <summary>
+    /// Generates a random number with the specified number of bits such that gcd(number, this) = 1 (secured)
+    /// </summary>
+    /// <param name="bits">Number of bit</param>
+    /// <param name="rand">Random object</param>
+    /// <returns>Relatively prime number of this</returns>
+    public BigInteger genCoPrime(int bits, RNGCryptoServiceProvider rand)
     {
         bool done = false;
         BigInteger result = new BigInteger();
