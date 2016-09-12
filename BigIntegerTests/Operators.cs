@@ -97,7 +97,7 @@ namespace BigIntegerTests
                     Assert.AreEqual(c.LongValue(), res);
                 }
             }
-                        
+
             // Random tests
             for (long i = -512; i <= 512; i++)
             {
@@ -343,6 +343,77 @@ namespace BigIntegerTests
         [TestMethod]
         public void TestRemainder()
         {
+            BigInteger dividend, divisor;
+
+            byte[] buffer = new byte[8];
+            long longA, longB;
+            int intA, intB;
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 1024; i++)
+            {
+                intA = rand.Next();
+                intB = rand.Next();
+
+                rand.NextBytes(buffer);
+                longA = BitConverter.ToInt64(buffer, 0);
+
+                rand.NextBytes(buffer);
+                longB = BitConverter.ToInt64(buffer, 0);
+
+                // The nominator has 50% chance of being negative
+                if (rand.Next(100) > 50)
+                {
+                    intA = -intA;
+                    longA = -longA;
+                }
+
+                if (rand.Next(100) > 50)
+                {
+                    intB = -intB;
+                    longB = -longB;
+                }
+
+
+                dividend = new BigInteger(intA);
+                divisor = new BigInteger(intB);
+                Assert.AreEqual(intA % intB, dividend % divisor);
+
+                dividend = new BigInteger(longA);
+                divisor = new BigInteger(longB);
+                Assert.AreEqual(longA % longB, dividend % divisor);
+
+            }
+
+            // Real big integers test
+            dividend = new BigInteger("1520103907346259794304485905491384144513868297140907866549441656176806962010861186795174778956936119665451726851398277493821938174298117680119637254730378387115386665481434876496459306840143869207485599774887590709125332121244546147365050750765792662", 10);
+            divisor = new BigInteger("3999170270695661167125183897430052640952506821419546747664948326507294916391520075713045588951029445106077991789053811538494517968922681074315058017231373659734714443845125774429854839908871090202431255705514496816005420683556878836231229356354689841", 10);
+            Assert.AreEqual("1520103907346259794304485905491384144513868297140907866549441656176806962010861186795174778956936119665451726851398277493821938174298117680119637254730378387115386665481434876496459306840143869207485599774887590709125332121244546147365050750765792662", (dividend % divisor).ToString());
+
+            dividend = new BigInteger("1520103907346259794304485905491384144513868297140907866549441656176806962010861186795174778956936119665451726851398277493821938174298117680119637254730378387115386665481434876496459306840143869207485599774887590709125332121244546147365050750765792662", 10);
+            divisor = new BigInteger("39991702706956611671251838974300526409", 10);
+            Assert.AreEqual("14224863213953332119374864916672407329", (dividend % divisor).ToString());
+
+            dividend = new BigInteger("-4892374982379857239874927984723985793798379847239847982749823798473294723864823648237498273984639286498236498623", 10);
+            divisor = new BigInteger("4739857549874986795487698547698754967495769548", 10);
+            Assert.AreEqual("-3922508931296767574334497438994082728975134127", (dividend % divisor).ToString());
+
+
+            dividend = new BigInteger("-47239482379482368468264237542354837522582574762537663752765372537626375267356273562537253675376253762537", 10);
+            divisor = new BigInteger("-27362876327637627366236231263623", 10);
+            Assert.AreEqual("-6421683606734776265092165479300", (dividend % divisor).ToString());
+
+            dividend = new BigInteger("21372878326948639864865745764576654656545766547376462748267391379279832793720732984703874035784759846575623798472309470239480923470293740237482374982365937042370470234792384792384792384792387", 10);
+            divisor = new BigInteger("-432487239847938247923874982374983798479238479238479832749823749823749823749823749238749237498274", 10);
+            Assert.AreEqual("254876992086071683602126841606563570727284326507706583359301844246445593045085620553532445683751", (dividend % divisor).ToString());
+
+            dividend = new BigInteger();
+            Assert.AreEqual(0, dividend % divisor);
+
+            // EXTREMELY BIG integers test
+            // ...
+
         }
 
         [TestMethod]
@@ -456,36 +527,269 @@ namespace BigIntegerTests
         [TestMethod]
         public void TestShiftRight()
         {
+            BigInteger bi;
+            Random rand = new Random();
+            long val;
+            int shift;
+
+            for (int i = 0; i < 10; i++)
+            {
+                val = rand.Next();
+                shift = rand.Next(64);
+                bi = new BigInteger(val);
+                Assert.AreEqual(val >> shift, bi >> shift);
+            }
+
+
+            bi = new BigInteger("924809238409385098058098509480958068098609480968340580938509380972309742093472", 10);
+            Assert.AreEqual(new BigInteger("50134009270906006717891768879324827144913685542556852557536", 10),
+                bi >> 64);
+
+            bi = new BigInteger("-4892379857398579837598945794857945985984795837948723947923847982374982379482739", 10);
+            Assert.AreEqual(-43, bi >> 256);
+
+            Assert.AreEqual(bi, bi >> 0);
+
+            bi = new BigInteger();
+            Assert.AreEqual(0, bi >> 0);
+            Assert.AreEqual(0, bi >> 32);
+
+            bi = new BigInteger("37948372985793865982364892364986234862398472938749823749832749823794823798472398472398479238479238479893247937294", 10);
+            var bi1 = bi >> 128;
+            bi >>= 108;
+            bi >>= 20;
+            Assert.AreEqual(bi1, bi);
         }
 
         [TestMethod]
         public void TestShiftleft()
         {
+            BigInteger bi;
+            Random rand = new Random();
+            long val;
+            int shift;
+
+            for (int i = 0; i < 10; i++)
+            {
+                val = rand.Next();
+                shift = rand.Next(32);
+                bi = new BigInteger(val);
+                Assert.AreEqual(val << shift, bi << shift);
+            }
+
+
+            bi = new BigInteger("289472984792387598349543698653984759847598495794574859459834759834759", 10);
+            Assert.AreEqual(new BigInteger("366950602921927260548988969672224942163196392144653400254227802546606806726350546686586935400464384", 10),
+                bi << 100);
+
+            bi = new BigInteger("-842409237094830958034680948096840958038509485094850948095834098409238409238409238409238", 10);
+            Assert.AreEqual(new BigInteger("-3618120123170609015407303105870205355688706547068184280066200926509324591946031946031944274280448", 10),
+                bi << 32);
+
+            Assert.AreEqual(bi, bi << 0);
+
+            bi = new BigInteger();
+            Assert.AreEqual(0, bi << 512);
+            Assert.AreEqual(0, bi << 0);
+
+            bi = new BigInteger("5839547983", 10);
+            Assert.AreEqual(new BigInteger("78295537753747698198599147837464527372530491551759450614028180360261995155017932590039132848480081508523111886678636656120673914352920960834465033096808337525178368", 10),
+                bi << 512);
+
+            var bi1 = bi << 123;
+            bi <<= 71;
+            bi <<= 52;
+            Assert.AreEqual(bi1, bi);
         }
 
         [TestMethod]
         public void TestBitwiseNOT()
         {
+            BigInteger bi;
+            Random rand = new Random();
+            int val;
+
+            for (int i = 0; i < 100; i++)
+            {
+                val = rand.Next();
+                bi = new BigInteger(val);
+                bi = ~bi;
+                Assert.AreEqual(~val, bi);
+            }
+
+            bi = new BigInteger("84234798379487398479823749823794872938479823794872398479238749823794872398646234637437662476376236427662476247623762376423642764", 10);
+            Assert.AreEqual("-84234798379487398479823749823794872938479823794872398479238749823794872398646234637437662476376236427662476247623762376423642765",
+                (~bi).ToString());
+
+            bi = new BigInteger("-493874985799457475983474983794823798472398479238479823749823749823794872394792384792387498327492374982342", 10);
+            Assert.AreEqual("493874985799457475983474983794823798472398479238479823749823749823794872394792384792387498327492374982341",
+                (~bi).ToString());
+
+            bi = new BigInteger();
+            Assert.AreEqual(-1, ~bi);
+
+            bi = new BigInteger(-1);
+            Assert.AreEqual(0, ~bi);
         }
 
         [TestMethod]
         public void TestBitwiseAND()
         {
+            BigInteger bi1, bi2;
+            int val1, val2;
+            Random rand = new Random();
+
+            for (int i = 0; i < 100; i++)
+            {
+                val1 = rand.Next();
+                val2 = rand.Next();
+                bi1 = new BigInteger(val1);
+                bi2 = new BigInteger(val2);
+
+                Assert.AreEqual(val1 & val2, bi1 & bi2);
+                Assert.AreEqual(val1 & bi2, bi1 & val2);
+                Assert.AreEqual(val1 & val2, bi1 & val2);
+                Assert.AreEqual(bi1 & bi2, bi2 & bi1);
+            }
+
+            bi1 = new BigInteger("92874923874982379857986482364264624762376623597598327498372948237984", 10);
+
+            bi2 = new BigInteger("9809808098098", 10);
+            Assert.AreEqual(8813340000800, bi1 & bi2);
+
+            bi2 = new BigInteger("-9809808098098", 10);
+            Assert.AreEqual(new BigInteger("92874923874982379857986482364264624762376623597598327489559608237184", 10), bi1 & bi2);
+
+            bi2 = new BigInteger("9852375927398479238479823498237984723984738927492387498237598945739489238479823749279423879", 10);
+            Assert.AreEqual(new BigInteger("33806963449438677090330238030114363166213119354258165015792680180864", 10), bi1 & bi2);
+
+
+            bi1 = new BigInteger("-359759845983279487239847923874982379482379847239479238479823749823749823794", 10);
+
+            bi2 = new BigInteger("-42934792387589349562398479823749823794823794872398479238749823749823749823798472398472", 10);
+            Assert.AreEqual(new BigInteger("-42934792387594717620213381796799219666276734637182117061107353568239482958040972582840", 10), bi1 & bi2);
+
+            bi2 = new BigInteger("42934792387589349562398479823749823794823794872398479238749823749823749823798472398472", 10);
+            Assert.AreEqual(new BigInteger("42934792387234957774230102309559371742401752257699737213867874329759659208217222759048", 10), bi1 & bi2);
+
+
+            Assert.AreEqual(0, bi1 & 0);
+            Assert.AreEqual(bi1 & bi2, bi2 & bi1);
+
         }
 
         [TestMethod]
         public void TestBitwiseOR()
         {
+            BigInteger bi1, bi2;
+            int val1, val2;
+            Random rand = new Random();
+
+            for (int i = 0; i < 100; i++)
+            {
+                val1 = rand.Next();
+                val2 = rand.Next();
+                bi1 = new BigInteger(val1);
+                bi2 = new BigInteger(val2);
+
+                Assert.AreEqual(val1 | val2, bi1 | bi2);
+                Assert.AreEqual(val1 | bi2, bi1 | val2);
+                Assert.AreEqual(val1 | val2, bi1 | val2);
+                Assert.AreEqual(bi1 | bi2, bi2 | bi1);
+            }
+
+
+            bi1 = new BigInteger("92874923874982379857986482364264624762376623597598327498372948237984", 10);
+
+            bi2 = new BigInteger("9809808098098", 10);
+            Assert.AreEqual(new BigInteger("92874923874982379857986482364264624762376623597598327499369416335282", 10), bi1 | bi2);
+
+            bi2 = new BigInteger("-9809808098098", 10);
+            Assert.AreEqual(-996468097298, bi1 | bi2);
+
+            bi2 = new BigInteger("9852375927398479238479823498237984723984738927492387498237598945739489238479823749279423879", 10);
+            Assert.AreEqual(new BigInteger("9852375927398479238479882566198410267687506583736721648499195109243732578642306329547480999", 10), bi1 | bi2);
+
+
+            bi1 = new BigInteger("-359759845983279487239847923874982379482379847239479238479823749823749823794", 10);
+
+            bi2 = new BigInteger("-42934792387589349562398479823749823794823794872398479238749823749823749823798472398472", 10);
+            Assert.AreEqual(new BigInteger("-354391788168377514190452052422042614698742024881949420064090615581249639426", 10), bi1 | bi2);
+
+            bi2 = new BigInteger("42934792387589349562398479823749823794823794872398479238749823749823749823798472398472", 10);
+            Assert.AreEqual(new BigInteger("-5368057814901973049395871452939764783637822357529818415733134242500184370", 10), bi1 | bi2);
+
+            Assert.AreEqual(bi1, bi1 | 0);
+            Assert.AreEqual(bi1 | bi2, bi2 | bi1);
         }
 
         [TestMethod]
         public void TestBitwiseXOR()
         {
+
+            BigInteger bi1, bi2;
+            int val1, val2;
+            Random rand = new Random();
+
+            for (int i = 0; i < 100; i++)
+            {
+                val1 = rand.Next();
+                val2 = rand.Next();
+                bi1 = new BigInteger(val1);
+                bi2 = new BigInteger(val2);
+
+                Assert.AreEqual(val1 ^ val2, bi1 ^ bi2);
+                Assert.AreEqual(val1 ^ bi2, bi1 ^ val2);
+                Assert.AreEqual(val1 ^ val2, bi1 ^ val2);
+                Assert.AreEqual(bi1 ^ bi2, bi2 ^ bi1);
+                Assert.AreEqual(bi1, (bi1 ^ bi2) ^ bi2);
+                Assert.AreEqual(0, bi1 ^ bi1);
+                Assert.AreEqual(bi1, bi1 ^ 0);
+            }
+
+            bi1 = new BigInteger("74230975094238059723084782374923794872398479238750937492374092370492370947230", 10);
+            bi2 = new BigInteger("4792374982379857239874092384092380498230", 10);
+            Assert.AreEqual(new BigInteger("74230975094238059723084782374923794874423065974749951679805158759135431558568", 10), bi1 ^ bi2);
+
+            bi2 = new BigInteger("-219472389823653269486239846923847923847982374982379823794823794823798", 10);
+            Assert.AreEqual(new BigInteger("-74230975306969375333812785155394807063977509312356766132226861179592791760620", 10), bi2 ^ bi1);
+
+            bi1 = new BigInteger("-4923479237598327490237094723098409238509348509049580945809485094850984095809486094850045", 10);
+            bi2 = new BigInteger("830958048609458059034958094580485094850934095834095834095803485093485094850348503485093", 10);
+            Assert.AreEqual(new BigInteger("-4129857153652965372423250425644299777184841952131294925772590326587628639426149959114074", 10), bi1 ^ bi2);
+
+            bi2 = new BigInteger("-830958048609458059034958094580485094850934095834095834095803485093485094850348503485093", 10);
+            Assert.AreEqual(new BigInteger("4129857153652965372423250425644299777184841952131294925772590326587628639426149959114072", 10), bi1 ^ bi2);
+
+            Assert.AreEqual(bi1 ^ bi2, bi2 ^ bi1);
+            Assert.AreEqual(bi1, bi1 ^ bi2 ^ bi2);
+            Assert.AreEqual(0, bi1 ^ bi1);
         }
 
         [TestMethod]
         public void TestNegate()
         {
+            BigInteger bi;
+            Random rand = new Random();
+            int val;
+
+            for (int i = 0; i < 100; i++)
+            {
+                val = rand.Next();
+                bi = new BigInteger(val);
+                Assert.AreEqual(-val, -bi);
+            }
+
+            bi = new BigInteger("9483729487239857984598749823794872398462938469238649823649823649723646238476284762384762363762376482376486328476238", 10);
+            Assert.AreEqual("-9483729487239857984598749823794872398462938469238649823649823649723646238476284762384762363762376482376486328476238",
+                (-bi).ToString());
+
+            bi = new BigInteger();
+            Assert.AreEqual(0, -bi);
+
+            bi = new BigInteger("-389479238759847589479573298479238479823749823749823749823749823749823642386498237498237492387498237498237498237948237984723947923", 10);
+            Assert.AreEqual("389479238759847589479573298479238479823749823749823749823749823749823642386498237498237492387498237498237498237948237984723947923",
+                (-bi).ToString());
         }
 
         [TestMethod]
@@ -513,7 +817,7 @@ namespace BigIntegerTests
                     Assert.IsTrue(b == d);
                 }
             }
-                        
+
             // Random tests
             for (long i = -512; i <= 512; i++)
             {
@@ -527,7 +831,7 @@ namespace BigIntegerTests
                     c = a;
                     d = b;
 
-                    if (r1==r2)
+                    if (r1 == r2)
                         Assert.IsTrue(a == b);
                     else
                         Assert.IsFalse(a == b);
@@ -649,21 +953,315 @@ namespace BigIntegerTests
         [TestMethod]
         public void TestGreater()
         {
+            BigInteger bi1, bi2;
+
+            byte[] buffer = new byte[8];
+            long longA, longB;
+            int intA, intB;
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 1024; i++)
+            {
+                intA = rand.Next();
+                intB = rand.Next();
+
+                rand.NextBytes(buffer);
+                longA = BitConverter.ToInt64(buffer, 0);
+
+                rand.NextBytes(buffer);
+                longB = BitConverter.ToInt64(buffer, 0);
+
+                // The number has 50% chance of being negative
+                if (rand.Next(100) > 50)
+                {
+                    intA = -intA;
+                    longA = -longA;
+                }
+
+                if (rand.Next(100) > 50)
+                {
+                    intB = -intB;
+                    longB = -longB;
+                }
+
+
+                bi1 = new BigInteger(intA);
+                bi2 = new BigInteger(intB);
+                Assert.AreEqual(intA > intB, bi1 > bi2);
+
+                bi1 = new BigInteger(longA);
+                bi2 = new BigInteger(longB);
+                Assert.AreEqual(longA > longB, bi1 > bi2);
+
+            }
+
+            bi1 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+
+            bi2 = new BigInteger("9928409238059703495703947092374098230948230948092384092384092384092830949053285973457948598475995479", 10);
+            Assert.IsTrue(bi1 > bi2);
+            Assert.IsFalse(bi2 > bi1);
+
+            bi2 = new BigInteger();
+            Assert.IsTrue(bi1 > bi2);
+            Assert.IsFalse(bi2 > bi1);
+
+            bi2 = new BigInteger("-432987407237409237483729487239847923874983249823794837298472398479238479382749823794823794872398472398479823", 10);
+            Assert.IsTrue(bi1 > bi2);
+            Assert.IsFalse(bi2 > bi1);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238194237094709234709237409237049237094723094709237", 10);
+            Assert.IsFalse(bi1 > bi2);
+            Assert.IsTrue(bi2 > bi1);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+            Assert.IsFalse(bi1 > bi2);
+            Assert.IsFalse(bi2 > bi1);
+
+            bi1 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            bi2 = new BigInteger("-4287035730274982349824798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsTrue(bi1 > bi2);
+            Assert.IsFalse(bi2 > bi1);
+
+            bi2 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsFalse(bi1 > bi2);
+            Assert.IsFalse(bi2 > bi1);
         }
 
         [TestMethod]
         public void TestGreaterOrEqual()
         {
+
+            BigInteger bi1, bi2;
+
+            byte[] buffer = new byte[8];
+            long longA, longB;
+            int intA, intB;
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 1024; i++)
+            {
+                intA = rand.Next();
+                intB = rand.Next();
+
+                rand.NextBytes(buffer);
+                longA = BitConverter.ToInt64(buffer, 0);
+
+                rand.NextBytes(buffer);
+                longB = BitConverter.ToInt64(buffer, 0);
+
+                // The number has 50% chance of being negative
+                if (rand.Next(100) > 50)
+                {
+                    intA = -intA;
+                    longA = -longA;
+                }
+
+                if (rand.Next(100) > 50)
+                {
+                    intB = -intB;
+                    longB = -longB;
+                }
+
+
+                bi1 = new BigInteger(intA);
+                bi2 = new BigInteger(intB);
+                Assert.AreEqual(intA >= intB, bi1 >= bi2);
+
+                bi1 = new BigInteger(longA);
+                bi2 = new BigInteger(longB);
+                Assert.AreEqual(longA >= longB, bi1 >= bi2);
+
+            }
+
+            bi1 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+
+            bi2 = new BigInteger("9928409238059703495703947092374098230948230948092384092384092384092830949053285973457948598475995479", 10);
+            Assert.IsTrue(bi1 >= bi2);
+            Assert.IsFalse(bi2 >= bi1);
+
+            bi2 = new BigInteger();
+            Assert.IsTrue(bi1 >= bi2);
+            Assert.IsFalse(bi2 >= bi1);
+
+            bi2 = new BigInteger("-432987407237409237483729487239847923874983249823794837298472398479238479382749823794823794872398472398479823", 10);
+            Assert.IsTrue(bi1 >= bi2);
+            Assert.IsFalse(bi2 >= bi1);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238194237094709234709237409237049237094723094709237", 10);
+            Assert.IsFalse(bi1 >= bi2);
+            Assert.IsTrue(bi2 >= bi1);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+            Assert.IsTrue(bi1 >= bi2);
+            Assert.IsTrue(bi2 >= bi1);
+
+            bi1 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            bi2 = new BigInteger("-4287035730274982349824798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsTrue(bi1 >= bi2);
+            Assert.IsFalse(bi2 >= bi1);
+
+            bi2 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsTrue(bi1 >= bi2);
+            Assert.IsTrue(bi2 >= bi1);
         }
 
         [TestMethod]
         public void TestLess()
         {
+
+            BigInteger bi1, bi2;
+
+            byte[] buffer = new byte[8];
+            long longA, longB;
+            int intA, intB;
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 1024; i++)
+            {
+                intA = rand.Next();
+                intB = rand.Next();
+
+                rand.NextBytes(buffer);
+                longA = BitConverter.ToInt64(buffer, 0);
+
+                rand.NextBytes(buffer);
+                longB = BitConverter.ToInt64(buffer, 0);
+
+                // The number has 50% chance of being negative
+                if (rand.Next(100) > 50)
+                {
+                    intA = -intA;
+                    longA = -longA;
+                }
+
+                if (rand.Next(100) > 50)
+                {
+                    intB = -intB;
+                    longB = -longB;
+                }
+
+
+                bi1 = new BigInteger(intA);
+                bi2 = new BigInteger(intB);
+                Assert.AreEqual(intA < intB, bi1 < bi2);
+
+                bi1 = new BigInteger(longA);
+                bi2 = new BigInteger(longB);
+                Assert.AreEqual(longA < longB, bi1 < bi2);
+
+            }
+
+            bi1 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+
+            bi2 = new BigInteger("9928409238059703495703947092374098230948230948092384092384092384092830949053285973457948598475995479", 10);
+            Assert.IsTrue(bi2 < bi1);
+            Assert.IsFalse(bi1 < bi2);
+
+            bi2 = new BigInteger();
+            Assert.IsTrue(bi2 < bi1);
+            Assert.IsFalse(bi1 < bi2);
+
+            bi2 = new BigInteger("-432987407237409237483729487239847923874983249823794837298472398479238479382749823794823794872398472398479823", 10);
+            Assert.IsTrue(bi2 < bi1);
+            Assert.IsFalse(bi1 < bi2);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238194237094709234709237409237049237094723094709237", 10);
+            Assert.IsFalse(bi2 < bi1);
+            Assert.IsTrue(bi1 < bi2);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+            Assert.IsFalse(bi2 < bi1);
+            Assert.IsFalse(bi1 < bi2);
+
+            bi1 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            bi2 = new BigInteger("-4287035730274982349824798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsTrue(bi2 < bi1);
+            Assert.IsFalse(bi1 < bi2);
+
+            bi2 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsFalse(bi2 < bi1);
+            Assert.IsFalse(bi1 < bi2);
         }
 
         [TestMethod]
         public void TestLessOrEqual()
         {
+            BigInteger bi1, bi2;
+
+            byte[] buffer = new byte[8];
+            long longA, longB;
+            int intA, intB;
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 1024; i++)
+            {
+                intA = rand.Next();
+                intB = rand.Next();
+
+                rand.NextBytes(buffer);
+                longA = BitConverter.ToInt64(buffer, 0);
+
+                rand.NextBytes(buffer);
+                longB = BitConverter.ToInt64(buffer, 0);
+
+                // The number has 50% chance of being negative
+                if (rand.Next(100) > 50)
+                {
+                    intA = -intA;
+                    longA = -longA;
+                }
+
+                if (rand.Next(100) > 50)
+                {
+                    intB = -intB;
+                    longB = -longB;
+                }
+
+
+                bi1 = new BigInteger(intA);
+                bi2 = new BigInteger(intB);
+                Assert.AreEqual(intA <= intB, bi1 <= bi2);
+
+                bi1 = new BigInteger(longA);
+                bi2 = new BigInteger(longB);
+                Assert.AreEqual(longA <= longB, bi1 <= bi2);
+
+            }
+
+            bi1 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+
+            bi2 = new BigInteger("9928409238059703495703947092374098230948230948092384092384092384092830949053285973457948598475995479", 10);
+            Assert.IsTrue(bi2 <= bi1);
+            Assert.IsFalse(bi1 <= bi2);
+
+            bi2 = new BigInteger();
+            Assert.IsTrue(bi2 <= bi1);
+            Assert.IsFalse(bi1 <= bi2);
+
+            bi2 = new BigInteger("-432987407237409237483729487239847923874983249823794837298472398479238479382749823794823794872398472398479823", 10);
+            Assert.IsTrue(bi2 <= bi1);
+            Assert.IsFalse(bi1 <= bi2);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238194237094709234709237409237049237094723094709237", 10);
+            Assert.IsFalse(bi2 <= bi1);
+            Assert.IsTrue(bi1 <= bi2);
+
+            bi2 = new BigInteger("95238509823095823094809238409238094809234809238409238094237094709234709237409237049237094723094709237", 10);
+            Assert.IsTrue(bi2 <= bi1);
+            Assert.IsTrue(bi1 <= bi2);
+
+            bi1 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            bi2 = new BigInteger("-4287035730274982349824798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsTrue(bi2 <= bi1);
+            Assert.IsFalse(bi1 <= bi2);
+
+            bi2 = new BigInteger("-4287035730274982349823798479238479823749823794872398759832740238049230740239750923705972309470923749238749823794792384798237492", 10);
+            Assert.IsTrue(bi2 <= bi1);
+            Assert.IsTrue(bi1 <= bi2);
         }
     }
 }

@@ -635,6 +635,9 @@ public class BigInteger
     /// <summary>
     /// Overloading of the unary &lt;&lt; operator (left shift)
     /// </summary>
+    /// <remarks>
+    /// Shifting by a negative number is an undefined behaviour (UB).
+    /// </remarks>
     /// <param name="bi1">A BigInteger</param>
     /// <param name="shiftVal">Left shift by shiftVal bit</param>
     /// <returns>Left-shifted BigInteger</returns>
@@ -687,6 +690,9 @@ public class BigInteger
     /// <summary>
     /// Overloading of the unary &gt;&gt; operator (right shift)
     /// </summary>
+    /// <remarks>
+    /// Shifting by a negative number is an undefined behaviour (UB).
+    /// </remarks>
     /// <param name="bi1">A BigInteger</param>
     /// <param name="shiftVal">Right shift by shiftVal bit</param>
     /// <returns>Right-shifted BigInteger</returns>
