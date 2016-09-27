@@ -268,7 +268,7 @@ public class BigInteger
         for (int i = inLen - 1, j = 0; i >= 3; i -= 4, j++)
         {
             data[j] = (uint)((inData[offset + i - 3] << 24) + (inData[offset + i - 2] << 16) +
-                             (inData[offset + i - 1] << 8)  +  inData[offset + i]);
+                             (inData[offset + i - 1] << 8) + inData[offset + i]);
         }
 
         if (leftOver == 1)
@@ -1625,25 +1625,36 @@ public class BigInteger
     /// <param name="rand"></param>
     public void genRandomBits(int bits, Random rand)
     {
+
         int dwords = bits >> 5;
         int remBits = bits & 0x1F;
 
         if (remBits != 0)
             dwords++;
 
-        if (dwords > maxLength)
-            throw (new ArithmeticException("Number of required bits > maxLength."));
+        if (dwords > maxLength || bits <= 0)
+            throw (new ArithmeticException("Number of required bits is not valid."));
 
+        byte[] randBytes = new byte[dwords * 4];
+        rand.NextBytes(randBytes);
         for (int i = 0; i < dwords; i++)
-            data[i] = (uint)(rand.NextDouble() * 0x100000000);
+        {
+            data[i] = BitConverter.ToUInt32(randBytes, i * 4);
+        }
 
         for (int i = dwords; i < maxLength; i++)
             data[i] = 0;
 
         if (remBits != 0)
         {
-            uint mask = (uint)(0x01 << (remBits - 1));
-            data[dwords - 1] |= mask;
+            uint mask;
+
+            if (bits != 1)
+            {
+                mask = (uint)(0x01 << (remBits - 1));
+                data[dwords - 1] |= mask;
+            }
+
 
             mask = (uint)(0xFFFFFFFF >> (32 - remBits));
             data[dwords - 1] &= mask;
@@ -1671,21 +1682,29 @@ public class BigInteger
         if (remBits != 0)
             dwords++;
 
-        if (dwords > maxLength)
-            throw (new ArithmeticException("Number of required bits > maxLength."));
+        if (dwords > maxLength || bits <= 0)
+            throw (new ArithmeticException("Number of required bits is not valid."));
 
-        byte[] randomBytes = new byte[4];
-
+        byte[] randomBytes = new byte[dwords * 4];
+        rng.GetBytes(randomBytes);
         for (int i = 0; i < dwords; i++)
         {
-            rng.GetBytes(randomBytes);
-            data[i] = BitConverter.ToUInt32(randomBytes, 0);
+            data[i] = BitConverter.ToUInt32(randomBytes, i * 4);
         }
+
+        for (int i = dwords; i < maxLength; i++)
+            data[i] = 0;
 
         if (remBits != 0)
         {
-            uint mask = (uint)(0x01 << (remBits - 1));
-            data[dwords - 1] |= mask;
+            uint mask;
+
+            if (bits != 1)
+            {
+                mask = (uint)(0x01 << (remBits - 1));
+                data[dwords - 1] |= mask;
+            }
+
 
             mask = (uint)(0xFFFFFFFF >> (32 - remBits));
             data[dwords - 1] &= mask;
