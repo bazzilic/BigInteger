@@ -3,7 +3,7 @@ BigInteger class for C#
 ![AppVeyor Build Badge](https://ci.appveyor.com/api/projects/status/4vvqx57s6owe507u?svg=true)
 
 This is a continuation of work on the BigInteger implementation for C# initially created by Chew Keong TAN.
-This implementation was compared to the .NET implementation (available in `System.Numerics` since .NET 4.0) and to the [Bouncy Castle implementation](http://www.bouncycastle.org/csharp/).
+This implementation was compared to the "native" implementation (available in `System.Numerics` since .NET 4.0) and to the [Bouncy Castle implementation](http://www.bouncycastle.org/csharp/).
 This library appeared to be significantly faster than other implementations and is compatible with .NET 2.0+.
 
 Pull requests are welcome and appreciated.
@@ -11,7 +11,7 @@ Pull requests are welcome and appreciated.
 Original description of the class is located here: http://www.codeproject.com/Articles/2728/C-BigInteger-Class
 
 Release NuGet packages feed is availbale at [NuGet gallery](https://www.nuget.org/packages/BigInteger/).
-Developer versions are available through this feed [https://ci.appveyor.com/nuget/bazzilic-biginteger](https://ci.appveyor.com/nuget/bazzilic-biginteger).
+Developer versions are available through this feed: [https://ci.appveyor.com/nuget/bazzilic-biginteger](https://ci.appveyor.com/nuget/bazzilic-biginteger).
 Developer versions are matched with `master` branch of this repository.
 You can install the package using Package Manager Console by executing `Install-Package BigInteger`.
 
