@@ -1,13 +1,18 @@
 BigInteger class for C#
 =======================
-Continuation of work on the BigInteger implementation for C# initially created by Chew Keong TAN. Current version is 1.0.6.
+![AppVeyor Build Badge](https://ci.appveyor.com/api/projects/status/4vvqx57s6owe507u?svg=true)
 
-Pull requests are welcome and appreciated. **Use with caution**.
+This is a continuation of work on the BigInteger implementation for C# initially created by Chew Keong TAN.
+This implementation was compared to the .NET implementation (available in `System.Numerics` since .NET 4.0) and to the [Bouncy Castle implementation](http://www.bouncycastle.org/csharp/).
+This library appeared to be significantly faster than other implementations and is compatible with .NET 2.0+.
+
+Pull requests are welcome and appreciated.
 
 Original description of the class is located here: http://www.codeproject.com/Articles/2728/C-BigInteger-Class
 
-NuGet package for the library is located here: https://www.nuget.org/packages/BigInteger/
-
+Release NuGet packages feed is availbale at [NuGet gallery](https://www.nuget.org/packages/BigInteger/).
+Developer versions are available through this feed [https://ci.appveyor.com/nuget/bazzilic-biginteger](https://ci.appveyor.com/nuget/bazzilic-biginteger).
+Developer versions are matched with `master` branch of this repository.
 You can install the package using Package Manager Console by executing `Install-Package BigInteger`.
 
 Refer to [Changelog.txt](https://raw.githubusercontent.com/bazzilic/BigInteger/master/Changelog.txt) for the changes to the current version.
@@ -17,7 +22,7 @@ TODO
 * ~~Fix known bugs~~
 * ~~Add testing suite~~
 * ~~Create a NuGet package~~
-* Do more or less full code coverage
+* ~~Do more or less full code coverage~~
 * Sign the DLL for NuGet (?)
 * Analyze performance
 
@@ -144,7 +149,7 @@ primality test but failed in JDK's isProbablePrime test.
 [6] R. Baillie and S. S. Wagstaff Jr, "Lucas Pseudoprimes", Mathematics of Computation,
     Vol. 35, No. 152, Oct 1980, pp. 1391-1417.
 
-[7] H. C. Williams, "Édouard Lucas and Primality Testing", Canadian Mathematical
+[7] H. C. Williams, "ï¿½douard Lucas and Primality Testing", Canadian Mathematical
     Society Series of Monographs and Advance Texts, vol. 22, John Wiley & Sons, New York,
     NY, 1998.
 
