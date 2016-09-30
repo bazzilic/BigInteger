@@ -80,7 +80,7 @@ namespace BigIntegerTests
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestModPow()
         {
             var a = new BigInteger("4513022378190195207248111493619814210011122111521314021116172245292421892189133135249253284210917322371331631915863149241442281401995510735118116112172202199102116124234501111031274954151507124570516154178228146", 10);
@@ -95,7 +95,7 @@ namespace BigIntegerTests
             Assert.AreEqual(new BigInteger("676144631297564803799040568236788209319025642240115630978591468748134664779002", 10), res);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestModInverse()
         {
 
@@ -118,7 +118,7 @@ namespace BigIntegerTests
             Assert.IsTrue(isExceptionRaised);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestJacobi()
         {
             // Value generated from http://math.fau.edu/richman/jacobi.htm
@@ -143,90 +143,96 @@ namespace BigIntegerTests
         [TestMethod]
         public void TestSecuredGenRandomBits()
         {
-            for (int i = 0; i < 9999; i++)
+            { // Test < 32 bits
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+                var rand = new Random();
+
+                bi.genRandomBits(rand.Next(1, 33), rng);
+
+                var bytes = bi.getBytes();
+                Array.Reverse(bytes);
+                var new_bytes = new byte[4];
+                Array.Copy(bytes, new_bytes, bytes.Length);
+
+                Assert.IsTrue(BitConverter.ToUInt32(new_bytes, 0) < (Math.Pow(2, 32) - 1));
+            }
+
+            // Test on random number of bits
+            for (int i = 0; i < 99; i++)
             {
-                { // Test < 32 bits
-                    var bi = new BigInteger();
-                    var rng = new RNGCryptoServiceProvider();
-                    var rand = new Random();
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+                var rand = new Random();
+                var bits = rand.Next(1, 70 * 32 + 1);
+                bi.genRandomBits(bits, rng);
+                Assert.AreEqual(bits, bi.bitCount());
+            }
 
-                    bi.genRandomBits(rand.Next(1, 33), rng);
+            { // Test upper boundary values
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
 
-                    var bytes = bi.getBytes();
-                    Array.Reverse(bytes);
-                    var new_bytes = new byte[4];
-                    Array.Copy(bytes, new_bytes, bytes.Length);
+                Exception exception = null;
 
-                    Assert.IsTrue(BitConverter.ToUInt32(new_bytes, 0) < (Math.Pow(2, 32) - 1));
+                try
+                {
+                    bi.genRandomBits(2241, rng);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
                 }
 
-                { // Test upper boundary values
-                    var bi = new BigInteger();
-                    var rng = new RNGCryptoServiceProvider();
+                Assert.IsNotNull(exception);
 
-                    Exception exception = null;
+                bi.genRandomBits(2240, rng);
+                Assert.AreEqual(70, bi.dataLength);
 
-                    try
-                    {
-                        bi.genRandomBits(2241, rng);
-                    }
-                    catch (Exception ex)
-                    {
-                        exception = ex;
-                    }
+                bi.genRandomBits(2239, rng);
+                Assert.AreEqual(70, bi.dataLength);
+                Assert.AreEqual(2239, bi.bitCount());
+            }
 
-                    Assert.IsNotNull(exception);
+            { // Test lower boudary value
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
 
-                    bi.genRandomBits(2240, rng);
-                    Assert.AreEqual(70, bi.dataLength);
-
-                    bi.genRandomBits(2239, rng);
-                    Assert.AreEqual(70, bi.dataLength);
-                    Assert.AreEqual(2239, bi.bitCount());
-                }
-
-                { // Test lower boudary value
-                    var bi = new BigInteger();
-                    var rng = new RNGCryptoServiceProvider();
-
-                    bi.genRandomBits(1, rng);
-                    Assert.IsTrue(bi.getBytes()[0] == 1 || bi.getBytes()[0] == 0);
-                }
+                bi.genRandomBits(1, rng);
+                Assert.IsTrue(bi.getBytes()[0] == 1 || bi.getBytes()[0] == 0);
             }
         }
 
         [TestMethod]
         public void TestGenCoPrime()
         {
-            for (int i = 0; i < 999; i++)
-            {
+            { // Test small values
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
 
-                { // Test small values
-                    var bi = new BigInteger();
-                    var rng = new RNGCryptoServiceProvider();
+                bi.genRandomBits(100, rng);
 
-                    bi.genRandomBits(100, rng);
+                var coprime = bi.genCoPrime(10, rng);
 
-                    var coprime = bi.genCoPrime(10, rng);
+                Assert.IsTrue((bi.gcd(coprime)).getBytes()[0] == 1);
+            }
 
-                    Assert.IsTrue((bi.gcd(coprime)).getBytes()[0] == 1);
-                }
+            // Test arbitrary values 
+            for (int i = 0; i < 99; i++)
+            { 
+                var bi = new BigInteger();
+                var rng = new RNGCryptoServiceProvider();
+                var rand = new Random();
 
-                { // Test arbitrary values 
-                    var bi = new BigInteger();
-                    var rng = new RNGCryptoServiceProvider();
-                    var rand = new Random();
+                bi.genRandomBits(rand.Next(1, 32 * 69 + 1), rng);
 
-                    bi.genRandomBits(rand.Next(1, 2241), rng);
+                var coprime = bi.genCoPrime(rand.Next(1, 2241), rng);
 
-                    var coprime = bi.genCoPrime(rand.Next(1, 2241), rng);
-
-                    Assert.IsTrue((bi.gcd(coprime)).getBytes()[0] == 1);
-                }
+                Assert.IsTrue((bi.gcd(coprime)).getBytes()[0] == 1);
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestAbs()
         {
             BigInteger bi;
@@ -250,7 +256,7 @@ namespace BigIntegerTests
             Assert.AreEqual("38265236482749823794237948792386482364236462846234623862368236423764236624762384762384623862376482364823", bi.abs().ToString());
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestMax()
         {
             BigInteger bi1, bi2;
@@ -297,7 +303,7 @@ namespace BigIntegerTests
 
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestMin()
         {
             BigInteger bi1, bi2;
@@ -343,7 +349,7 @@ namespace BigIntegerTests
             Assert.AreEqual(bi2, bi2.min(bi1));
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestSqrt()
         {
             BigInteger bi;
@@ -370,7 +376,7 @@ namespace BigIntegerTests
             Assert.AreEqual("949937153042746085485800690340716910200218535446376464883006159759187016711766033117259286191698487700345112712284215083646265481183724", bi.sqrt().ToString());
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TestGCD()
         {
             BigInteger bi1, bi2;
@@ -423,7 +429,7 @@ namespace BigIntegerTests
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         // This assumes MAX_LENGTH of BigInteger is 70
         public void TestToHexString()
         {
@@ -454,6 +460,11 @@ namespace BigIntegerTests
 
                 Assert.AreEqual(valHexString, bi.ToHexString());
             }
+
+            // Test on big number
+            bi = new BigInteger("9329857983749832748932749873298479328748923759347985734985739749327498327492387498237498237493794872394723947923749823759347598475983475943759843759834759834759374975984375984375934759437593", 10);
+            Assert.AreEqual("86042e915cdcf19902845ddf57c6b604685c53a01da858573f52219e1c743fc193e5b56aaba29ef308a82cd26da8066d1ae2af170b1443f3b539938966107f8f77263e4f13fb815049d5f746438519".ToUpper(),
+                bi.ToHexString());
         }
     }
 }
