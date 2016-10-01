@@ -268,7 +268,7 @@ public class BigInteger
         for (int i = inLen - 1, j = 0; i >= 3; i -= 4, j++)
         {
             data[j] = (uint)((inData[offset + i - 3] << 24) + (inData[offset + i - 2] << 16) +
-                             (inData[offset + i - 1] << 8)  +  inData[offset + i]);
+                             (inData[offset + i - 1] << 8) + inData[offset + i]);
         }
 
         if (leftOver == 1)
@@ -1131,6 +1131,7 @@ public class BigInteger
     /// <summary>
     /// Overloading of division operator
     /// </summary>
+    /// <remarks>The dataLength of the divisor's absolute value must be less than maxLength</remarks>
     /// <param name="bi1">Dividend</param>
     /// <param name="bi2">Divisor</param>
     /// <returns>Quotient of the division</returns>
@@ -1176,6 +1177,7 @@ public class BigInteger
     /// <summary>
     /// Overloading of modulus operator
     /// </summary>
+    /// <remarks>The dataLength of the divisor's absolute value must be less than maxLength</remarks>
     /// <param name="bi1">Dividend</param>
     /// <param name="bi2">Divisor</param>
     /// <returns>Remainder of the division</returns>
@@ -1631,19 +1633,27 @@ public class BigInteger
         if (remBits != 0)
             dwords++;
 
-        if (dwords > maxLength)
-            throw (new ArithmeticException("Number of required bits > maxLength."));
+        if (dwords > maxLength || bits <= 0)
+            throw (new ArithmeticException("Number of required bits is not valid."));
+
+        byte[] randBytes = new byte[dwords * 4];
+        rand.NextBytes(randBytes);
 
         for (int i = 0; i < dwords; i++)
-            data[i] = (uint)(rand.NextDouble() * 0x100000000);
-
+            data[i] = BitConverter.ToUInt32(randBytes, i * 4);
+        
         for (int i = dwords; i < maxLength; i++)
             data[i] = 0;
 
         if (remBits != 0)
         {
-            uint mask = (uint)(0x01 << (remBits - 1));
-            data[dwords - 1] |= mask;
+            uint mask;
+
+            if (bits != 1)
+            {
+                mask = (uint)(0x01 << (remBits - 1));
+                data[dwords - 1] |= mask;
+            }
 
             mask = (uint)(0xFFFFFFFF >> (32 - remBits));
             data[dwords - 1] &= mask;
@@ -1671,21 +1681,27 @@ public class BigInteger
         if (remBits != 0)
             dwords++;
 
-        if (dwords > maxLength)
-            throw (new ArithmeticException("Number of required bits > maxLength."));
+        if (dwords > maxLength || bits <= 0)
+            throw (new ArithmeticException("Number of required bits is not valid."));
 
-        byte[] randomBytes = new byte[4];
+        byte[] randomBytes = new byte[dwords * 4];
+        rng.GetBytes(randomBytes);
 
         for (int i = 0; i < dwords; i++)
-        {
-            rng.GetBytes(randomBytes);
-            data[i] = BitConverter.ToUInt32(randomBytes, 0);
-        }
+            data[i] = BitConverter.ToUInt32(randomBytes, i * 4);
+
+        for (int i = dwords; i < maxLength; i++)
+            data[i] = 0;
 
         if (remBits != 0)
         {
-            uint mask = (uint)(0x01 << (remBits - 1));
-            data[dwords - 1] |= mask;
+            uint mask;
+
+            if (bits != 1)
+            {
+                mask = (uint)(0x01 << (remBits - 1));
+                data[dwords - 1] |= mask;
+            }
 
             mask = (uint)(0xFFFFFFFF >> (32 - remBits));
             data[dwords - 1] &= mask;
@@ -2445,6 +2461,9 @@ public class BigInteger
     /// <summary>
     /// Generates a random number with the specified number of bits such that gcd(number, this) = 1
     /// </summary>
+    /// <remarks>
+    /// The number of bits must be greater than 0 and less than 2209
+    /// </remarks>
     /// <param name="bits">Number of bit</param>
     /// <param name="rand">Random object</param>
     /// <returns>Relatively prime number of this</returns>
@@ -2655,7 +2674,8 @@ public class BigInteger
     /// Returns a value that is equivalent to the integer square root of this
     /// </summary>
     /// <remarks>
-    /// The integer square root of "this" is defined as the largest integer n, such that (n * n) &lt;= this
+    /// The integer square root of "this" is defined as the largest integer n, such that (n * n) &lt;= this.
+    /// Square root of negative integer is an undefined behaviour (UB).
     /// </remarks>
     /// <returns>Integer square root of this</returns>
     public BigInteger sqrt()
