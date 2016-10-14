@@ -8,6 +8,10 @@ This library appeared to be significantly faster than other implementations and 
 
 Pull requests are welcome and appreciated.
 
+Licensing terms for this library are in development at this moment.
+As of now, the library can be used as-is for non-commercial use with a condition of attribution (a link to this repository is sufficient).
+For commercial use please contact us.
+
 Original description of the class is located here: http://www.codeproject.com/Articles/2728/C-BigInteger-Class
 
 Release NuGet packages feed is availbale at [NuGet gallery](https://www.nuget.org/packages/BigInteger/).
@@ -149,7 +153,7 @@ primality test but failed in JDK's isProbablePrime test.
 [6] R. Baillie and S. S. Wagstaff Jr, "Lucas Pseudoprimes", Mathematics of Computation,
     Vol. 35, No. 152, Oct 1980, pp. 1391-1417.
 
-[7] H. C. Williams, "�douard Lucas and Primality Testing", Canadian Mathematical
+[7] H. C. Williams, "Édouard Lucas and Primality Testing", Canadian Mathematical
     Society Series of Monographs and Advance Texts, vol. 22, John Wiley & Sons, New York,
     NY, 1998.
 

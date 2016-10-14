@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BigInteger")]
-[assembly: AssemblyDescription("BigInteger class implementation for C#.")]
+[assembly: AssemblyDescription(@"A fast and feature-rich BigInteger implementation for .NET. Works faster than the ""native"" .NET Framework implementation (available in System.Numerics since .NET 4.0) and than the Bouncy Castle implementation. The library is compatible with .NET 2.0+ and is a fully-managed zero-dependency class.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vasily Sidorov (bazzilic) / Nanyang Technological University")]
 [assembly: AssemblyProduct("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.6.*")]
-//[assembly: AssemblyFileVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
