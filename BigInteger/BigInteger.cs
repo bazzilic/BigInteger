@@ -356,9 +356,10 @@ public class BigInteger
     /// <returns>Result of the addition of 2 BigIntegers</returns>
     public static BigInteger operator +(BigInteger bi1, BigInteger bi2)
     {
-        BigInteger result = new BigInteger();
-
-        result.dataLength = (bi1.dataLength > bi2.dataLength) ? bi1.dataLength : bi2.dataLength;
+        BigInteger result = new BigInteger()
+        {
+            dataLength = (bi1.dataLength > bi2.dataLength) ? bi1.dataLength : bi2.dataLength
+        };
 
         long carry = 0;
         for (int i = 0; i < result.dataLength; i++)
@@ -444,9 +445,10 @@ public class BigInteger
     /// <returns>Result of the subtraction of 2 BigIntegers</returns>
     public static BigInteger operator -(BigInteger bi1, BigInteger bi2)
     {
-        BigInteger result = new BigInteger();
-
-        result.dataLength = (bi1.dataLength > bi2.dataLength) ? bi1.dataLength : bi2.dataLength;
+        BigInteger result = new BigInteger()
+        {
+            dataLength = (bi1.dataLength > bi2.dataLength) ? bi1.dataLength : bi2.dataLength
+        };
 
         long carryIn = 0;
         for (int i = 0; i < result.dataLength; i++)
